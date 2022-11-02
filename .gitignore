@@ -1,0 +1,5 @@
+lib
+node_modules
+src/secrets.ts
+src/data.json
+sectiosn.json
