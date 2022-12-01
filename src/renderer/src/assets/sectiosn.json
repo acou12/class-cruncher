@@ -1,0 +1,1200 @@
+{
+  "CSE 2321": [
+    {
+      "id": "whatever",
+      "course": "2321",
+      "subjectId": "CSE",
+      "meetings": [
+        {
+          "days": "TTh",
+          "daysRaw": "TR",
+          "startTime": 1555,
+          "endTime": 1715,
+          "location": "Caldwell Lab 120",
+          "meetingType": "LEC",
+          "startDate": "2023-01-10T00:00:00Z",
+          "endDate": "2023-04-20T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Caldwell Lab 120",
+          "buildingDescription": "",
+          "buildingCode": "026",
+          "room": "120",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-17T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "2321",
+      "subjectId": "CSE",
+      "meetings": [
+        {
+          "days": "TTh",
+          "daysRaw": "TR",
+          "startTime": 1420,
+          "endTime": 1540,
+          "location": "Caldwell Lab 177",
+          "meetingType": "LEC",
+          "startDate": "2023-01-10T00:00:00Z",
+          "endDate": "2023-04-20T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Caldwell Lab 177",
+          "buildingDescription": "",
+          "buildingCode": "026",
+          "room": "177",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-17T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "2321",
+      "subjectId": "CSE",
+      "meetings": [
+        {
+          "days": "MWF",
+          "daysRaw": "MWF",
+          "startTime": 1020,
+          "endTime": 1115,
+          "location": "McPherson Lab 1040",
+          "meetingType": "LEC",
+          "startDate": "2023-01-09T00:00:00Z",
+          "endDate": "2023-04-24T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "McPherson Lab 1040",
+          "buildingDescription": "",
+          "buildingCode": "053",
+          "room": "1040",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-24T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "2321",
+      "subjectId": "CSE",
+      "meetings": [
+        {
+          "days": "MWF",
+          "daysRaw": "MWF",
+          "startTime": 1240,
+          "endTime": 1335,
+          "location": "Cockins Hall 218",
+          "meetingType": "LEC",
+          "startDate": "2023-01-09T00:00:00Z",
+          "endDate": "2023-04-24T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Cockins Hall 218",
+          "buildingDescription": "",
+          "buildingCode": "063",
+          "room": "218",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-24T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "2321",
+      "subjectId": "CSE",
+      "meetings": [
+        {
+          "days": "TTh",
+          "daysRaw": "TR",
+          "startTime": 935,
+          "endTime": 1055,
+          "location": "Psychology Bldg 014",
+          "meetingType": "LEC",
+          "startDate": "2023-01-10T00:00:00Z",
+          "endDate": "2023-04-20T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Psychology Bldg 014",
+          "buildingDescription": "",
+          "buildingCode": "144",
+          "room": "014",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-17T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "2321",
+      "subjectId": "CSE",
+      "meetings": [
+        {
+          "days": "MWF",
+          "daysRaw": "MWF",
+          "startTime": 1350,
+          "endTime": 1445,
+          "location": "Cockins Hall 218",
+          "meetingType": "LEC",
+          "startDate": "2023-01-09T00:00:00Z",
+          "endDate": "2023-04-24T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Cockins Hall 218",
+          "buildingDescription": "",
+          "buildingCode": "063",
+          "room": "218",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-24T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "2321",
+      "subjectId": "CSE",
+      "meetings": [
+        {
+          "days": "MWF",
+          "daysRaw": "MWF",
+          "startTime": 1130,
+          "endTime": 1225,
+          "location": "Dreese Lab 266",
+          "meetingType": "LEC",
+          "startDate": "2023-01-09T00:00:00Z",
+          "endDate": "2023-04-24T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Dreese Lab 266",
+          "buildingDescription": "",
+          "buildingCode": "279",
+          "room": "266",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-24T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "2321",
+      "subjectId": "CSE",
+      "meetings": [
+        {
+          "days": "MWF",
+          "daysRaw": "MWF",
+          "startTime": 1020,
+          "endTime": 1115,
+          "location": "Caldwell Lab 220",
+          "meetingType": "LEC",
+          "startDate": "2023-01-09T00:00:00Z",
+          "endDate": "2023-04-24T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Caldwell Lab 220",
+          "buildingDescription": "",
+          "buildingCode": "026",
+          "room": "220",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-24T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "2321",
+      "subjectId": "CSE",
+      "meetings": [
+        {
+          "days": "MWF",
+          "daysRaw": "MWF",
+          "startTime": 910,
+          "endTime": 1005,
+          "location": "Cockins Hall 218",
+          "meetingType": "LEC",
+          "startDate": "2023-01-09T00:00:00Z",
+          "endDate": "2023-04-24T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Cockins Hall 218",
+          "buildingDescription": "",
+          "buildingCode": "063",
+          "room": "218",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-24T00:00:00Z"
+        }
+      ]
+    }
+  ],
+  "ENGLISH 1110.01": [
+    {
+      "id": "whatever",
+      "course": "1110.01",
+      "subjectId": "ENGLISH",
+      "meetings": [
+        {
+          "days": "MWF",
+          "daysRaw": "MWF",
+          "startTime": 1020,
+          "endTime": 1115,
+          "location": "Enarson Classroom Bldg 240",
+          "meetingType": "LEC",
+          "startDate": "2023-01-09T00:00:00Z",
+          "endDate": "2023-04-24T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Enarson Classroom Bldg 240",
+          "buildingDescription": "",
+          "buildingCode": "072",
+          "room": "240",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-24T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "1110.01",
+      "subjectId": "ENGLISH",
+      "meetings": [
+        {
+          "days": "MWF",
+          "daysRaw": "MWF",
+          "startTime": 1020,
+          "endTime": 1115,
+          "location": "Enarson Classroom Bldg 312",
+          "meetingType": "LEC",
+          "startDate": "2023-01-09T00:00:00Z",
+          "endDate": "2023-04-24T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Enarson Classroom Bldg 312",
+          "buildingDescription": "",
+          "buildingCode": "072",
+          "room": "312",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-24T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "1110.01",
+      "subjectId": "ENGLISH",
+      "meetings": [
+        {
+          "days": "MWF",
+          "daysRaw": "MWF",
+          "startTime": 1020,
+          "endTime": 1115,
+          "location": "Enarson Classroom Bldg 218",
+          "meetingType": "LEC",
+          "startDate": "2023-01-09T00:00:00Z",
+          "endDate": "2023-04-24T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Enarson Classroom Bldg 218",
+          "buildingDescription": "",
+          "buildingCode": "072",
+          "room": "218",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-24T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "1110.01",
+      "subjectId": "ENGLISH",
+      "meetings": [
+        {
+          "days": "WF",
+          "daysRaw": "WF",
+          "startTime": 910,
+          "endTime": 1030,
+          "location": "Cockins Hall 228",
+          "meetingType": "LEC",
+          "startDate": "2023-01-11T00:00:00Z",
+          "endDate": "2023-04-21T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Cockins Hall 228",
+          "buildingDescription": "",
+          "buildingCode": "063",
+          "room": "228",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-17T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "1110.01",
+      "subjectId": "ENGLISH",
+      "meetings": [
+        {
+          "days": "MWF",
+          "daysRaw": "MWF",
+          "startTime": 1020,
+          "endTime": 1115,
+          "location": "Enarson Classroom Bldg 206",
+          "meetingType": "LEC",
+          "startDate": "2023-01-09T00:00:00Z",
+          "endDate": "2023-04-24T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Enarson Classroom Bldg 206",
+          "buildingDescription": "",
+          "buildingCode": "072",
+          "room": "206",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-24T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "1110.01",
+      "subjectId": "ENGLISH",
+      "meetings": [
+        {
+          "days": "MWF",
+          "daysRaw": "MWF",
+          "startTime": 1020,
+          "endTime": 1115,
+          "location": "Enarson Classroom Bldg 358",
+          "meetingType": "LEC",
+          "startDate": "2023-01-09T00:00:00Z",
+          "endDate": "2023-04-24T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Enarson Classroom Bldg 358",
+          "buildingDescription": "",
+          "buildingCode": "072",
+          "room": "358",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-24T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "1110.01",
+      "subjectId": "ENGLISH",
+      "meetings": [
+        {
+          "days": "MWF",
+          "daysRaw": "MWF",
+          "startTime": 1020,
+          "endTime": 1115,
+          "location": "Enarson Classroom Bldg 245",
+          "meetingType": "LEC",
+          "startDate": "2023-01-09T00:00:00Z",
+          "endDate": "2023-04-24T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Enarson Classroom Bldg 245",
+          "buildingDescription": "",
+          "buildingCode": "072",
+          "room": "245",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-24T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "1110.01",
+      "subjectId": "ENGLISH",
+      "meetings": [
+        {
+          "days": "TTh",
+          "daysRaw": "TR",
+          "startTime": 800,
+          "endTime": 920,
+          "location": "Denney Hall 245",
+          "meetingType": "LEC",
+          "startDate": "2023-01-10T00:00:00Z",
+          "endDate": "2023-04-20T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Denney Hall 245",
+          "buildingDescription": "",
+          "buildingCode": "030",
+          "room": "245",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-17T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "1110.01",
+      "subjectId": "ENGLISH",
+      "meetings": [
+        {
+          "days": "WF",
+          "daysRaw": "WF",
+          "startTime": 800,
+          "endTime": 920,
+          "location": "Denney Hall 262",
+          "meetingType": "LEC",
+          "startDate": "2023-01-11T00:00:00Z",
+          "endDate": "2023-04-21T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Denney Hall 262",
+          "buildingDescription": "",
+          "buildingCode": "030",
+          "room": "262",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-17T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "1110.01",
+      "subjectId": "ENGLISH",
+      "meetings": [
+        {
+          "days": "TTh",
+          "daysRaw": "TR",
+          "startTime": 800,
+          "endTime": 920,
+          "location": "Denney Hall 206",
+          "meetingType": "LEC",
+          "startDate": "2023-01-10T00:00:00Z",
+          "endDate": "2023-04-20T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Denney Hall 206",
+          "buildingDescription": "",
+          "buildingCode": "030",
+          "room": "206",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-17T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "1110.01",
+      "subjectId": "ENGLISH",
+      "meetings": [
+        {
+          "days": "TTh",
+          "daysRaw": "TR",
+          "startTime": 800,
+          "endTime": 920,
+          "location": "Denney Hall 265",
+          "meetingType": "LEC",
+          "startDate": "2023-01-10T00:00:00Z",
+          "endDate": "2023-04-20T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Denney Hall 265",
+          "buildingDescription": "",
+          "buildingCode": "030",
+          "room": "265",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-17T00:00:00Z"
+        }
+      ]
+    }
+  ],
+  "ENGR 1182.01": [
+    {
+      "id": "whatever",
+      "course": "1182.01",
+      "subjectId": "ENGR",
+      "meetings": [
+        {
+          "days": "MF",
+          "daysRaw": "MF",
+          "startTime": 800,
+          "endTime": 855,
+          "location": "Hitchcock Hall 224",
+          "meetingType": "LEC",
+          "startDate": "2023-01-09T00:00:00Z",
+          "endDate": "2023-04-24T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Hitchcock Hall 224",
+          "buildingDescription": "",
+          "buildingCode": "274",
+          "room": "224",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-24T00:00:00Z"
+        },
+        {
+          "days": "W",
+          "daysRaw": "W",
+          "startTime": 800,
+          "endTime": 920,
+          "location": "Hitchcock Hall 224",
+          "meetingType": "LAB",
+          "startDate": "2023-01-11T00:00:00Z",
+          "endDate": "2023-04-19T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Hitchcock Hall 224",
+          "buildingDescription": "",
+          "buildingCode": "274",
+          "room": "224",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-17T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "1182.01",
+      "subjectId": "ENGR",
+      "meetings": [
+        {
+          "days": "TF",
+          "daysRaw": "TF",
+          "startTime": 800,
+          "endTime": 855,
+          "location": "Hitchcock Hall 308",
+          "meetingType": "LEC",
+          "startDate": "2023-01-10T00:00:00Z",
+          "endDate": "2023-04-21T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Hitchcock Hall 308",
+          "buildingDescription": "",
+          "buildingCode": "274",
+          "room": "308",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-17T00:00:00Z"
+        },
+        {
+          "days": "Th",
+          "daysRaw": "R",
+          "startTime": 800,
+          "endTime": 920,
+          "location": "Hitchcock Hall 224",
+          "meetingType": "LAB",
+          "startDate": "2023-01-12T00:00:00Z",
+          "endDate": "2023-04-20T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Hitchcock Hall 224",
+          "buildingDescription": "",
+          "buildingCode": "274",
+          "room": "224",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-17T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "1182.01",
+      "subjectId": "ENGR",
+      "meetings": [
+        {
+          "days": "MTh",
+          "daysRaw": "MR",
+          "startTime": 1500,
+          "endTime": 1555,
+          "location": "Hitchcock Hall 308",
+          "meetingType": "LEC",
+          "startDate": "2023-01-09T00:00:00Z",
+          "endDate": "2023-04-24T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Hitchcock Hall 308",
+          "buildingDescription": "",
+          "buildingCode": "274",
+          "room": "308",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-24T00:00:00Z"
+        },
+        {
+          "days": "W",
+          "daysRaw": "W",
+          "startTime": 1555,
+          "endTime": 1715,
+          "location": "Hitchcock Hall 308",
+          "meetingType": "LAB",
+          "startDate": "2023-01-11T00:00:00Z",
+          "endDate": "2023-04-19T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Hitchcock Hall 308",
+          "buildingDescription": "",
+          "buildingCode": "274",
+          "room": "308",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-17T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "1182.01",
+      "subjectId": "ENGR",
+      "meetings": [
+        {
+          "days": "W",
+          "daysRaw": "W",
+          "startTime": 1420,
+          "endTime": 1540,
+          "location": "Hitchcock Hall 224",
+          "meetingType": "LAB",
+          "startDate": "2023-01-11T00:00:00Z",
+          "endDate": "2023-04-19T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Hitchcock Hall 224",
+          "buildingDescription": "",
+          "buildingCode": "274",
+          "room": "224",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-17T00:00:00Z"
+        },
+        {
+          "days": "TF",
+          "daysRaw": "TF",
+          "startTime": 1240,
+          "endTime": 1335,
+          "location": "Hitchcock Hall 224",
+          "meetingType": "LEC",
+          "startDate": "2023-01-10T00:00:00Z",
+          "endDate": "2023-04-21T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Hitchcock Hall 224",
+          "buildingDescription": "",
+          "buildingCode": "274",
+          "room": "224",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-17T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "1182.01",
+      "subjectId": "ENGR",
+      "meetings": [
+        {
+          "days": "MTh",
+          "daysRaw": "MR",
+          "startTime": 1130,
+          "endTime": 1225,
+          "location": "Hitchcock Hall 308",
+          "meetingType": "LEC",
+          "startDate": "2023-01-09T00:00:00Z",
+          "endDate": "2023-04-24T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Hitchcock Hall 308",
+          "buildingDescription": "",
+          "buildingCode": "274",
+          "room": "308",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-24T00:00:00Z"
+        },
+        {
+          "days": "W",
+          "daysRaw": "W",
+          "startTime": 1245,
+          "endTime": 1405,
+          "location": "Hitchcock Hall 308",
+          "meetingType": "LAB",
+          "startDate": "2023-01-11T00:00:00Z",
+          "endDate": "2023-04-19T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Hitchcock Hall 308",
+          "buildingDescription": "",
+          "buildingCode": "274",
+          "room": "308",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-17T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "1182.01",
+      "subjectId": "ENGR",
+      "meetings": [
+        {
+          "days": "MTh",
+          "daysRaw": "MR",
+          "startTime": 1020,
+          "endTime": 1115,
+          "location": "Hitchcock Hall 308",
+          "meetingType": "LEC",
+          "startDate": "2023-01-09T00:00:00Z",
+          "endDate": "2023-04-24T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Hitchcock Hall 308",
+          "buildingDescription": "",
+          "buildingCode": "274",
+          "room": "308",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-24T00:00:00Z"
+        },
+        {
+          "days": "W",
+          "daysRaw": "W",
+          "startTime": 935,
+          "endTime": 1055,
+          "location": "Hitchcock Hall 308",
+          "meetingType": "LAB",
+          "startDate": "2023-01-11T00:00:00Z",
+          "endDate": "2023-04-19T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Hitchcock Hall 308",
+          "buildingDescription": "",
+          "buildingCode": "274",
+          "room": "308",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-17T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "1182.01",
+      "subjectId": "ENGR",
+      "meetings": [
+        {
+          "days": "TF",
+          "daysRaw": "TF",
+          "startTime": 1130,
+          "endTime": 1225,
+          "location": "Hitchcock Hall 308",
+          "meetingType": "LEC",
+          "startDate": "2023-01-10T00:00:00Z",
+          "endDate": "2023-04-21T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Hitchcock Hall 308",
+          "buildingDescription": "",
+          "buildingCode": "274",
+          "room": "308",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-17T00:00:00Z"
+        },
+        {
+          "days": "W",
+          "daysRaw": "W",
+          "startTime": 1110,
+          "endTime": 1230,
+          "location": "Hitchcock Hall 308",
+          "meetingType": "LAB",
+          "startDate": "2023-01-11T00:00:00Z",
+          "endDate": "2023-04-19T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Hitchcock Hall 308",
+          "buildingDescription": "",
+          "buildingCode": "274",
+          "room": "308",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-17T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "1182.01",
+      "subjectId": "ENGR",
+      "meetings": [
+        {
+          "days": "MTh",
+          "daysRaw": "MR",
+          "startTime": 800,
+          "endTime": 855,
+          "location": "Hitchcock Hall 308",
+          "meetingType": "LEC",
+          "startDate": "2023-01-09T00:00:00Z",
+          "endDate": "2023-04-24T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Hitchcock Hall 308",
+          "buildingDescription": "",
+          "buildingCode": "274",
+          "room": "308",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-24T00:00:00Z"
+        },
+        {
+          "days": "T",
+          "daysRaw": "T",
+          "startTime": 800,
+          "endTime": 920,
+          "location": "Hitchcock Hall 224",
+          "meetingType": "LAB",
+          "startDate": "2023-01-10T00:00:00Z",
+          "endDate": "2023-04-18T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Hitchcock Hall 224",
+          "buildingDescription": "",
+          "buildingCode": "274",
+          "room": "224",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-17T00:00:00Z"
+        }
+      ]
+    }
+  ],
+  "MATH 2255": [
+    {
+      "id": "whatever",
+      "course": "2255",
+      "subjectId": "MATH",
+      "meetings": [
+        {
+          "days": "MWF",
+          "daysRaw": "MWF",
+          "startTime": 1350,
+          "endTime": 1445,
+          "location": "Baker Systems 188",
+          "meetingType": "LEC",
+          "startDate": "2023-01-09T00:00:00Z",
+          "endDate": "2023-04-24T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Baker Systems 188",
+          "buildingDescription": "",
+          "buildingCode": "280",
+          "room": "188",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-24T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "2255",
+      "subjectId": "MATH",
+      "meetings": [
+        {
+          "days": "MWF",
+          "daysRaw": "MWF",
+          "startTime": 1130,
+          "endTime": 1225,
+          "location": "Baker Systems 144",
+          "meetingType": "LEC",
+          "startDate": "2023-01-09T00:00:00Z",
+          "endDate": "2023-04-24T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Baker Systems 144",
+          "buildingDescription": "",
+          "buildingCode": "280",
+          "room": "144",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-24T00:00:00Z"
+        }
+      ]
+    }
+  ],
+  "MATH 2568": [
+    {
+      "id": "whatever",
+      "course": "2568",
+      "subjectId": "MATH",
+      "meetings": [
+        {
+          "days": "MWF",
+          "daysRaw": "MWF",
+          "startTime": 800,
+          "endTime": 855,
+          "location": "Knowlton Hall 190",
+          "meetingType": "LEC",
+          "startDate": "2023-01-09T00:00:00Z",
+          "endDate": "2023-04-24T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Knowlton Hall 190",
+          "buildingDescription": "",
+          "buildingCode": "017",
+          "room": "190",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-24T00:00:00Z"
+        }
+      ]
+    }
+  ],
+  "MATH 3345": [
+    {
+      "id": "whatever",
+      "course": "3345",
+      "subjectId": "MATH",
+      "meetings": [
+        {
+          "days": "MWF",
+          "daysRaw": "MWF",
+          "startTime": 1500,
+          "endTime": 1555,
+          "location": "Caldwell Lab 133",
+          "meetingType": "LEC",
+          "startDate": "2023-01-09T00:00:00Z",
+          "endDate": "2023-04-24T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Caldwell Lab 133",
+          "buildingDescription": "",
+          "buildingCode": "026",
+          "room": "133",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-24T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "3345",
+      "subjectId": "MATH",
+      "meetings": [
+        {
+          "days": "MWF",
+          "daysRaw": "MWF",
+          "startTime": 1350,
+          "endTime": 1445,
+          "location": "University Hall 043",
+          "meetingType": "LEC",
+          "startDate": "2023-01-09T00:00:00Z",
+          "endDate": "2023-04-24T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "University Hall 043",
+          "buildingDescription": "",
+          "buildingCode": "339",
+          "room": "043",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-24T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "3345",
+      "subjectId": "MATH",
+      "meetings": [
+        {
+          "days": "MWF",
+          "daysRaw": "MWF",
+          "startTime": 1130,
+          "endTime": 1225,
+          "location": "Baker Systems 148",
+          "meetingType": "LEC",
+          "startDate": "2023-01-09T00:00:00Z",
+          "endDate": "2023-04-24T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "Baker Systems 148",
+          "buildingDescription": "",
+          "buildingCode": "280",
+          "room": "148",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-24T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "3345",
+      "subjectId": "MATH",
+      "meetings": [
+        {
+          "days": "MWF",
+          "daysRaw": "MWF",
+          "startTime": 1130,
+          "endTime": 1225,
+          "location": "University Hall 043",
+          "meetingType": "LEC",
+          "startDate": "2023-01-09T00:00:00Z",
+          "endDate": "2023-04-24T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "University Hall 043",
+          "buildingDescription": "",
+          "buildingCode": "339",
+          "room": "043",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-24T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "3345",
+      "subjectId": "MATH",
+      "meetings": [
+        {
+          "days": "MWF",
+          "daysRaw": "MWF",
+          "startTime": 910,
+          "endTime": 1005,
+          "location": "University Hall 043",
+          "meetingType": "LEC",
+          "startDate": "2023-01-09T00:00:00Z",
+          "endDate": "2023-04-24T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "University Hall 043",
+          "buildingDescription": "",
+          "buildingCode": "339",
+          "room": "043",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-24T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "3345",
+      "subjectId": "MATH",
+      "meetings": [
+        {
+          "days": "MWF",
+          "daysRaw": "MWF",
+          "startTime": 910,
+          "endTime": 1005,
+          "location": "University Hall 051",
+          "meetingType": "LEC",
+          "startDate": "2023-01-09T00:00:00Z",
+          "endDate": "2023-04-24T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "University Hall 051",
+          "buildingDescription": "",
+          "buildingCode": "339",
+          "room": "051",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-24T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "whatever",
+      "course": "3345",
+      "subjectId": "MATH",
+      "meetings": [
+        {
+          "days": "MWF",
+          "daysRaw": "MWF",
+          "startTime": 910,
+          "endTime": 1005,
+          "location": "University Hall 086",
+          "meetingType": "LEC",
+          "startDate": "2023-01-09T00:00:00Z",
+          "endDate": "2023-04-24T00:00:00Z",
+          "mapURL": "",
+          "meetingTypeDescription": null,
+          "scheduleTypeCode": null,
+          "scheduleTypeDescription": null,
+          "building": "University Hall 086",
+          "buildingDescription": "",
+          "buildingCode": "339",
+          "room": "086",
+          "firstMonday": "2023-01-09T00:00:00Z",
+          "lastMonday": "2023-04-24T00:00:00Z"
+        }
+      ]
+    }
+  ]
+}
