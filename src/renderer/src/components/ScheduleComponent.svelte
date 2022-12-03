@@ -1,16 +1,7 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
-  import { randomSchedule, type Schedule } from '../schedule'
+  import type { Schedule } from '../schedule'
 
   export let schedule: Schedule
-
-  onMount(() => {
-    document.addEventListener('keydown', (event) => {
-      if (event.key === ' ') {
-        schedule = randomSchedule()
-      }
-    })
-  })
 
   const fitToHeight = (x: number) => {
     return (x / (60 * 24)) * 200 - 50
@@ -18,6 +9,9 @@
 </script>
 
 <div class="week">
+  {#each [...Array(12).keys()].slice(1) as y}
+    <div class="hour-divider" style="top: {(y / 12) * 100}%;" />
+  {/each}
   {#each schedule.days as day}
     <div class="day">
       {#each day.meetings as meeting}

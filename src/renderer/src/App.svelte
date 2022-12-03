@@ -1,29 +1,35 @@
 <script lang="ts">
-  import Schedule from './components/Schedule.svelte'
-  import { schedule } from './schedule'
+  import ScheduleComponent from './components/ScheduleComponent.svelte'
+  import { allSchedules } from './schedule'
+
+  allSchedules.sort((x, y) => x.totalGaps() - y.totalGaps())
+  allSchedules.sort((x, y) => x.maxEndTime() - y.maxEndTime())
 </script>
 
 <div class="grid">
-  <div class="schedule-wrapper">
-    <Schedule {schedule} />
-  </div>
+  {#each allSchedules.slice(0, 300) as schedule}
+    <div class="schedule-wrapper">
+      <ScheduleComponent {schedule} />
+    </div>
+  {/each}
   <div class="info">
-    {#each schedule.courses as course}
+    <!-- {#each schedule.courses as course}
       <div>
         <span class="circle" style="background-color: #{course.color};" />{course.name}
       </div>
-    {/each}
+    {/each} -->
   </div>
 </div>
 
 <style lang="scss">
   .grid {
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: repeat(10, 1fr);
     padding: 100px 0;
   }
 
   .schedule-wrapper {
-    height: 80vh;
+    padding: 10px;
+    aspect-ratio: 1/1;
   }
 </style>
