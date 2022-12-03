@@ -1,24 +1,62 @@
 <script lang="ts">
+  import { onMount } from 'svelte'
   import ScheduleComponent from './components/ScheduleComponent.svelte'
-  import { allSchedules } from './schedule'
+  import { allSchedules, Meeting } from './schedule'
 
   allSchedules.sort((x, y) => x.totalGaps() - y.totalGaps())
   allSchedules.sort((x, y) => x.maxEndTime() - y.maxEndTime())
+
+  let focused: number | undefined
+  $: focusedSchedule = focused === undefined ? undefined : allSchedules[focused]
+
+  let selectedMeeting: Meeting | undefined = undefined
+
+  onMount(() => {
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        focused = undefined
+      }
+    })
+  })
 </script>
 
 <div class="grid">
-  {#each allSchedules.slice(0, 300) as schedule}
-    <div class="schedule-wrapper">
+  {#if focused !== undefined}
+    <div class="fullscreen">
+      <div class="grid">
+        <ScheduleComponent schedule={focusedSchedule} bind:selectedMeeting />
+        <div class="sidebar">
+          <h1>Schedule Stats</h1>
+          {#each focusedSchedule.sections as section}
+            <div>
+              <span class="circle" style="background-color: #{section.parentCourse.color};" />
+              {section.parentCourse.name}
+            </div>
+          {/each}
+          <div class="stat">
+            <strong>Gaps</strong> - {focusedSchedule.totalGaps()} minutes {focusedSchedule.minimallyGapped()
+              ? '(MINIMALLY GAPPED!)'
+              : ''}
+          </div>
+          <div class="sections">
+            {#each focusedSchedule.sections as section}
+              {#each section.meetings as meeting}
+                <div class="section" class:highlight={selectedMeeting === meeting}>
+                  {section.parentCourse.name}: {meeting.startTime} - {meeting.endTime} ({meeting.day})
+                </div>
+              {/each}
+            {/each}
+          </div>
+        </div>
+      </div>
+    </div>
+  {/if}
+  {#each allSchedules.slice(0, 100) as schedule, i}
+    <div class="schedule-wrapper" on:keydown={() => (focused = i)} on:click={() => (focused = i)}>
       <ScheduleComponent {schedule} />
     </div>
   {/each}
-  <div class="info">
-    <!-- {#each schedule.courses as course}
-      <div>
-        <span class="circle" style="background-color: #{course.color};" />{course.name}
-      </div>
-    {/each} -->
-  </div>
+  <div class="info" />
 </div>
 
 <style lang="scss">
@@ -31,5 +69,30 @@
   .schedule-wrapper {
     padding: 10px;
     aspect-ratio: 1/1;
+  }
+
+  .fullscreen {
+    position: fixed;
+    left: 0vw;
+    top: 0vh;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    background-color: white;
+    .grid {
+      padding: 0;
+      display: grid;
+      margin: 5vh 5vw;
+      width: 90vw;
+      height: 90vh;
+      grid-template-columns: 3fr 2fr;
+      .sidebar {
+        padding: 0px 30px;
+      }
+    }
+  }
+
+  .highlight {
+    background-color: yellow;
   }
 </style>

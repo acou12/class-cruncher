@@ -59,3 +59,11 @@ export const powerset = <T>(set: T[]): T[][] => {
     }
   }
 }
+
+export const randomSubset = <T>(ts: T[]): T[] => {
+  return ts.flatMap((x) => (Math.random() < 0.5 ? [x] : []))
+}
+
+export const randomElement = <T>(ts: T[]): T => {
+  return ts[Math.floor(Math.random() * ts.length)]
+}
