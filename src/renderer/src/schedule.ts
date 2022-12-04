@@ -171,7 +171,7 @@ for (const sectionName in rawSections) {
   courses.push(course)
 }
 
-const scheduleFromSections = (sections: Section[]): Schedule => {
+export const scheduleFromSections = (sections: Section[]): Schedule => {
   const days: Record<string, Day> = {
     M: new Day([]),
     T: new Day([]),

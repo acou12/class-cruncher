@@ -24,7 +24,7 @@
   {#if focused !== undefined}
     <div class="fullscreen">
       <div class="grid">
-        <ScheduleComponent schedule={focusedSchedule} bind:selectedMeeting />
+        <ScheduleComponent bind:schedule={focusedSchedule} bind:selectedMeeting interactable />
         <div class="sidebar">
           <h1>Schedule Stats</h1>
           {#each focusedSchedule.sections as section}
