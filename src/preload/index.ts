@@ -1,8 +1,10 @@
-import { contextBridge } from 'electron'
+import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
-// Custom APIs for renderer
-const api = {}
+export type Api = {
+  loadHeaders: (headers: string) => Promise<void>
+  getCourses: (courses: string[]) => Promise<string[]>
+}
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise
@@ -10,13 +12,11 @@ const api = {}
 if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electron', electronAPI)
-    contextBridge.exposeInMainWorld('api', api)
+    contextBridge.exposeInMainWorld('api', {
+      loadHeaders: (headers: string) => ipcRenderer.invoke('loadHeaders', headers),
+      getCourses: (courses: string[]) => ipcRenderer.invoke('getCourses', courses)
+    } as Api)
   } catch (error) {
     console.error(error)
   }
-} else {
-  // @ts-ignore (define in dts)
-  window.electron = electronAPI
-  // @ts-ignore (define in dts)
-  window.api = api
 }

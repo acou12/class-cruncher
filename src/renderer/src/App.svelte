@@ -1,17 +1,39 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import ScheduleComponent from './components/ScheduleComponent.svelte'
-  import { allSchedules, Meeting } from './schedule'
+  import { allSchedules, initialize, Meeting } from './schedule'
 
-  allSchedules.sort((x, y) => x.totalGaps() - y.totalGaps())
-  allSchedules.sort((x, y) => x.maxEndTime() - y.maxEndTime())
+  let schedules = allSchedules
 
   let focused: number | undefined
   $: focusedSchedule = focused === undefined ? undefined : allSchedules[focused]
 
   let selectedMeeting: Meeting | undefined = undefined
 
-  onMount(() => {
+  onMount(async () => {
+    await window.api.loadHeaders(`THIS IS WHERE THE HEADERS GO. :)`)
+    initialize(
+      (await window.api.getCourses([
+        '9082989',
+        '9083052',
+        '9083053',
+        '9082979',
+        '9127882',
+        '9310643',
+        '9127835',
+        '9378697',
+        '9403335',
+        '9082980',
+        '9310700',
+        '9310744',
+        '9127840',
+        '9310670',
+        '9343191',
+        '9083072',
+        '9310747'
+      ])) as any
+    )
+    schedules = allSchedules
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') {
         focused = undefined
@@ -27,16 +49,21 @@
         <ScheduleComponent bind:schedule={focusedSchedule} bind:selectedMeeting interactable />
         <div class="sidebar">
           <h1>Schedule Stats</h1>
-          {#each focusedSchedule.sections as section}
-            <div>
-              <span class="circle" style="background-color: #{section.parentCourse.color};" />
-              {section.parentCourse.name}
-            </div>
-          {/each}
+          <div class="section-grid">
+            {#each focusedSchedule.sections as section}
+              <div>
+                <span class="circle" style="background-color: #{section.parentCourse.color};" />
+                {section.parentCourse.name}
+              </div>
+            {/each}
+          </div>
           <div class="stat">
             <strong>Gaps</strong> - {focusedSchedule.totalGaps()} minutes {focusedSchedule.minimallyGapped()
               ? '(MINIMALLY GAPPED!)'
               : ''}
+          </div>
+          <div class="stat">
+            <strong>Hours</strong> - {focusedSchedule.totalHours()} credit hours
           </div>
           <div class="sections">
             {#each focusedSchedule.sections as section}
@@ -51,7 +78,7 @@
       </div>
     </div>
   {/if}
-  {#each allSchedules.slice(0, 100) as schedule, i}
+  {#each schedules.slice(0, 100) as schedule, i}
     <div class="schedule-wrapper" on:keydown={() => (focused = i)} on:click={() => (focused = i)}>
       <ScheduleComponent {schedule} />
     </div>
@@ -76,9 +103,9 @@
     left: 0vw;
     top: 0vh;
     width: 100vw;
-    height: 100vh;
     z-index: 1;
     background-color: white;
+    overflow: scroll;
     .grid {
       padding: 0;
       display: grid;
@@ -94,5 +121,10 @@
 
   .highlight {
     background-color: yellow;
+  }
+
+  .section-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
   }
 </style>

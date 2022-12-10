@@ -1,5 +1,5 @@
 import sectionsString from './assets/sectiosn.json?raw'
-import { fixedTime, randomColor, randomElement, randomSubset } from './util'
+import { fixedTime, randomColor, randomElement, randomSubset, shuffled } from '../../util'
 
 class Course {
   constructor(
@@ -56,9 +56,42 @@ export class Schedule {
     )
   }
 
+  // Some heuristics.
+
   totalGaps(): number {
     const gaps = this.days.flatMap((day) => day.gaps())
     return [0, ...gaps].reduce((acc, x) => acc + x)
+  }
+
+  averageGaps(): number {
+    const gaps = this.days.flatMap((day) => day.gaps())
+    return [0, ...gaps].reduce((acc, x) => acc + x) / gaps.length
+  }
+
+  cohesivity(): number {
+    const courses = this.sections.map((section) => section.parentCourse.name.split(' ')[0])
+    const uniqueCourses: string[] = []
+    for (const course of courses)
+      if (!uniqueCourses.some((otherCourse) => course === otherCourse)) uniqueCourses.push(course)
+    return uniqueCourses.length
+  }
+
+  deviation(): number {
+    const meetings = this.days.map((day) =>
+      [0, ...day.meetings.map((meeting) => meeting.endTime - meeting.startTime)].reduce(
+        (acc, x) => acc + x
+      )
+    )
+    const mean = [0, ...meetings].reduce((acc, x) => acc + x) / meetings.length
+    return [0, ...meetings.map((meeting) => Math.pow(meeting - mean, 2))].reduce(
+      (acc, x) => acc + x
+    )
+  }
+
+  fridayLast(): number {
+    return [0, ...this.days[4].meetings.map((meeting) => meeting.endTime)].reduce((acc, x) =>
+      Math.max(acc, x)
+    )
   }
 
   maxEndTime(): number {
@@ -69,6 +102,12 @@ export class Schedule {
   minimallyGapped(): boolean {
     const gaps = this.days.flatMap((day) => day.gaps())
     return gaps.every((gap) => gap <= 15)
+  }
+
+  totalHours(): number {
+    return [0, ...this.sections.map((section) => section.parentCourse.hours)].reduce(
+      (acc, x) => acc + x
+    )
   }
 }
 
@@ -147,28 +186,48 @@ type Data = {
 
 type SectionMap = Record<string, Data['sections']>
 
-export const rawSections: SectionMap = JSON.parse(sectionsString)
+const courses: Course[] = []
 
-export const courses: Course[] = []
+export const initialize = (sectionMap: SectionMap): void => {
+  const rawSections: SectionMap = sectionMap
 
-for (const sectionName in rawSections) {
-  const sections = rawSections[sectionName]
-  const course = new Course(sectionName, randomColor(), sections[0].creditsMax, [])
-  for (const rawSection of sections) {
-    const section = new Section([], course)
-    section.meetings.push(
-      ...rawSection.meetings.flatMap((meeting) =>
-        meeting.daysRaw
-          .split('')
-          .map(
-            (day) =>
-              new Meeting(fixedTime(meeting.startTime), fixedTime(meeting.endTime), day, section)
-          )
+  for (const sectionName in rawSections) {
+    const sections = rawSections[sectionName]
+    const course = new Course(sectionName, randomColor(), sections[0].creditsMax, [])
+    for (const rawSection of sections) {
+      const section = new Section([], course)
+      section.meetings.push(
+        ...rawSection.meetings.flatMap((meeting) =>
+          meeting.daysRaw
+            .split('')
+            .map(
+              (day) =>
+                new Meeting(fixedTime(meeting.startTime), fixedTime(meeting.endTime), day, section)
+            )
+        )
       )
-    )
-    course.sections.push(section)
+      course.sections.push(section)
+    }
+    courses.push(course)
   }
-  courses.push(course)
+
+  console.log('Generating schedules...')
+
+  allSchedules = Array(5000)
+    .fill(0)
+    .map(() => randomSchedule())
+    .filter((schedule) => schedule.valid())
+    .filter((schedule) => schedule.totalHours() === 18)
+
+  allSchedules.sort((x, y) => +(x.averageGaps() - y.averageGaps()))
+  // allSchedules.sort((x, y) => +(x.cohesivity() - y.cohesivity()))
+  // allSchedules.sort((x, y) => x.maxEndTime() - y.maxEndTime())
+  // allSchedules.sort((x, y) => +(x.totalGaps() - y.totalGaps()))
+  // allSchedules.sort((x, y) => -(x.deviation() - y.deviation()))
+  allSchedules.sort((x, y) => +(x.fridayLast() - y.fridayLast()))
+  // allSchedules.sort((x, y) => -(x.totalHours() - y.totalHours()))
+
+  console.log(allSchedules)
 }
 
 export const scheduleFromSections = (sections: Section[]): Schedule => {
@@ -188,19 +247,26 @@ export const scheduleFromSections = (sections: Section[]): Schedule => {
 }
 
 const randomSchedule = (): Schedule => {
-  let randomSections: Section[]
-  do {
-    randomSections = randomSubset(courses.map((course) => randomElement(course.sections)))
-  } while (
-    randomSections.length === 0 ||
-    randomSections.map((section) => section.parentCourse.hours).reduce((acc, x) => acc + x) !== 18
-  )
-  return scheduleFromSections(randomSections)
+  const sections = []
+  for (const course of shuffled(courses)) {
+    for (const section of shuffled(course.sections).filter(
+      (section) => section.meetings.length > 0
+    )) {
+      const schedule = scheduleFromSections([...sections, section])
+      if (schedule.valid()) {
+        sections.push(section)
+        break
+      }
+    }
+    if (scheduleFromSections(sections).totalHours() >= 18) break
+  }
+  console.log(sections)
+  return scheduleFromSections(sections)
 }
 
-console.log(randomSchedule())
-
-export const allSchedules = Array(50000)
+export let allSchedules: Schedule[] = []
+/* Array(50000)
   .fill(0)
   .map(() => randomSchedule())
   .filter((schedule) => schedule.valid())
+  */

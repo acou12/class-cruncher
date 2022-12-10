@@ -41,10 +41,10 @@ export const superCartesianProduct = <T>(sets: T[][]): T[][] => {
 }
 
 export const powerset = <T>(set: T[]): T[][] => {
-  const result = []
+  const result: T[][] = []
   const binarySet = Array(set.length).fill(0)
   while (TRUE) {
-    const element = []
+    const element: T[] = []
     for (let i = 0; i < set.length; i++) {
       if (binarySet[i] === 1) element.push(set[i])
     }
@@ -58,6 +58,7 @@ export const powerset = <T>(set: T[]): T[][] => {
       binarySet[row]++
     }
   }
+  return result
 }
 
 export const randomSubset = <T>(ts: T[]): T[] => {
@@ -66,4 +67,15 @@ export const randomSubset = <T>(ts: T[]): T[] => {
 
 export const randomElement = <T>(ts: T[]): T => {
   return ts[Math.floor(Math.random() * ts.length)]
+}
+
+export const shuffled = <T>(arr: T[]): T[] => {
+  const copy = [...arr]
+  const result: T[] = []
+  while (copy.length > 0) {
+    const index = Math.floor(Math.random() * copy.length)
+    result.push(copy[index])
+    copy.splice(index, 1)
+  }
+  return result
 }

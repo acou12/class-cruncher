@@ -3,3 +3,8 @@ dist
 out
 *.log*
 /src/renderer/src/assets/sectiosn.json
+/src/main/secrets.ts
+data.json
+courses.json
+classes.json
+subjects.json

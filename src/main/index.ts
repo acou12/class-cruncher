@@ -1,6 +1,7 @@
-import { app, shell, BrowserWindow } from 'electron'
+import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import * as path from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
+import { grabSchedules, loadKeys } from './api'
 
 function createWindow(): void {
   // Create the browser window.
@@ -36,6 +37,11 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'))
   }
+
+  ipcMain.handle('loadHeaders', async (_event, keys) => {
+    loadKeys(keys)
+  })
+  ipcMain.handle('getCourses', async (_event, courses) => grabSchedules(courses))
 }
 
 // This method will be called when Electron has finished
