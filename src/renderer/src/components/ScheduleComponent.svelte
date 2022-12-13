@@ -1,15 +1,15 @@
 <script lang="ts">
-  import { scheduleFromSections, type Meeting, type Schedule } from '../schedule'
+  import type { Meeting, Schedule } from '../schedule'
 
   export let interactable: boolean = false
   export let schedule: Schedule
   export let selectedMeeting: Meeting | undefined = undefined
 
-  $: otherOptions =
-    selectedMeeting === undefined ? undefined : selectedMeeting.parentSection.parentCourse.sections
+  // $: otherOptions =
+  //   selectedMeeting === undefined ? undefined : selectedMeeting.parentSection.parentCourse.sections
 
   const fitToHeight = (x: number) => {
-    return (x / (60 * 24)) * 200 - 50
+    return (x / (60 * 24)) * 175 - 50
   }
 </script>
 
@@ -17,12 +17,13 @@
   {#each [...Array(12).keys()].slice(1) as y}
     <div class="hour-divider" style="top: {(y / 12) * 100}%;" />
   {/each}
-  {#each schedule.days as day, dayIndex}
+  {#each schedule.days as day}
     <div class="day">
       {#each day.meetings as meeting}
         <div
           class="meeting"
-          class:selected={selectedMeeting === meeting}
+          class:selected={selectedMeeting !== undefined &&
+            selectedMeeting.parentSection.meetings.includes(meeting)}
           style={`
                   height: ${fitToHeight(meeting.endTime) - fitToHeight(meeting.startTime)}%;
                   top: ${fitToHeight(meeting.startTime)}%;
@@ -32,7 +33,7 @@
           on:keydown={() => interactable && (selectedMeeting = meeting)}
         />
       {/each}
-      {#if otherOptions !== undefined}
+      <!-- {#if otherOptions !== undefined}
         {#each otherOptions as section}
           <div class="section-group">
             {#each section.meetings
@@ -57,7 +58,7 @@
             {/each}
           </div>
         {/each}
-      {/if}
+      {/if} -->
     </div>
   {/each}
 </div>

@@ -2,6 +2,13 @@ export const fixedTime = (time: number): number => {
   return Math.floor(time / 100) * 60 + (time % 100)
 }
 
+export const humanTime = (time: number): string => {
+  const hour = Math.floor(time / 60)
+  const [fixedHour, am] = hour < 12 ? [hour, true] : hour == 12 ? [hour, false] : [hour - 12, false]
+  const minute = time % 60
+  return `${fixedHour}:${minute.toString().padStart(2, '0')} ${am ? 'AM' : 'PM'}`
+}
+
 export const randomColor = (): string =>
   Math.floor(Math.random() * 0xffffff)
     .toString(16)
@@ -40,26 +47,6 @@ export const superCartesianProduct = <T>(sets: T[][]): T[][] => {
   throw Error('uhh')
 }
 
-export const powerset = <T>(set: T[]): T[][] => {
-  const result = []
-  const binarySet = Array(set.length).fill(0)
-  while (TRUE) {
-    const element = []
-    for (let i = 0; i < set.length; i++) {
-      if (binarySet[i] === 1) element.push(set[i])
-    }
-    result.push(element)
-    let row = set.length - 1
-    binarySet[row]++
-    while (binarySet[row] === 2) {
-      if (row === 0) return result
-      binarySet[row] = 0
-      row--
-      binarySet[row]++
-    }
-  }
-}
-
 export const randomSubset = <T>(ts: T[]): T[] => {
   return ts.flatMap((x) => (Math.random() < 0.5 ? [x] : []))
 }
@@ -70,11 +57,19 @@ export const randomElement = <T>(ts: T[]): T => {
 
 export const shuffled = <T>(arr: T[]): T[] => {
   const copy = [...arr]
-  const result = []
+  const result: T[] = []
   while (copy.length > 0) {
     const index = Math.floor(Math.random() * copy.length)
     result.push(copy[index])
     copy.splice(index, 1)
+  }
+  return result
+}
+
+export const unique = <T>(arr: T[]): T[] => {
+  const result: T[] = []
+  for (const t of arr) {
+    if (!result.includes(t)) result.push(t)
   }
   return result
 }

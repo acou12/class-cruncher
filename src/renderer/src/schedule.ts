@@ -1,5 +1,4 @@
-import sectionsString from './assets/sectiosn.json?raw'
-import { fixedTime, randomColor, randomElement, randomSubset, shuffled } from '../../util'
+import { fixedTime, randomColor, shuffled } from '../../util'
 
 class Course {
   constructor(
@@ -89,14 +88,14 @@ export class Schedule {
   }
 
   fridayLast(): number {
-    return [0, ...this.days[4].meetings.map((meeting) => meeting.endTime)].reduce((acc, x) =>
-      Math.max(acc, x)
-    )
+    return Math.max(...this.days[4].meetings.map((meeting) => meeting.endTime))
   }
 
   maxEndTime(): number {
-    const lasts = this.days.map((day) => day.meetings.map((meeting) => meeting.endTime).at(-1))
-    return lasts.reduce((acc, x) => Math.max(acc, x))
+    const lasts = this.days.map((day) =>
+      Math.max(...day.meetings.map((meeting) => meeting.endTime))
+    )
+    return Math.max(...lasts)
   }
 
   minimallyGapped(): boolean {
@@ -188,7 +187,7 @@ type SectionMap = Record<string, Data['sections']>
 
 const courses: Course[] = []
 
-export const initialize = (sectionMap: SectionMap): void => {
+export const initialize = async (sectionMap: SectionMap): Promise<void> => {
   const rawSections: SectionMap = sectionMap
 
   for (const sectionName in rawSections) {
@@ -211,23 +210,21 @@ export const initialize = (sectionMap: SectionMap): void => {
     courses.push(course)
   }
 
-  console.log('Generating schedules...')
+  // allSchedules = Array(500)
+  //   .fill(0)
+  //   .map(() => randomSchedule())
+  //   .filter((schedule) => schedule.valid())
+  //   .filter((schedule) => schedule.totalHours() === 30)
 
-  allSchedules = Array(5000)
-    .fill(0)
-    .map(() => randomSchedule())
-    .filter((schedule) => schedule.valid())
-    .filter((schedule) => schedule.totalHours() === 30)
-
-  allSchedules.sort((x, y) => +(x.averageGaps() - y.averageGaps()))
+  // allSchedules.sort((x, y) => +(x.averageGaps() - y.averageGaps()))
   // allSchedules.sort((x, y) => +(x.cohesivity() - y.cohesivity()))
   // allSchedules.sort((x, y) => x.maxEndTime() - y.maxEndTime())
   // allSchedules.sort((x, y) => +(x.totalGaps() - y.totalGaps()))
   // allSchedules.sort((x, y) => -(x.deviation() - y.deviation()))
-  allSchedules.sort((x, y) => +(x.fridayLast() - y.fridayLast()))
+  // allSchedules.sort((x, y) => +(x.fridayLast() - y.fridayLast()))
   // allSchedules.sort((x, y) => -(x.totalHours() - y.totalHours()))
 
-  console.log(allSchedules)
+  // console.log(allSchedules)
 }
 
 export const scheduleFromSections = (sections: Section[]): Schedule => {
@@ -246,7 +243,7 @@ export const scheduleFromSections = (sections: Section[]): Schedule => {
   return new Schedule(Object.values(days), [...sections])
 }
 
-const randomSchedule = (): Schedule => {
+const randomSchedule = (hours: number): Schedule => {
   const sections = []
   for (const course of shuffled(courses)) {
     for (const section of shuffled(course.sections).filter(
@@ -258,15 +255,15 @@ const randomSchedule = (): Schedule => {
         break
       }
     }
-    if (scheduleFromSections(sections).totalHours() >= 30) break
+    if (scheduleFromSections(sections).totalHours() >= hours) break
   }
-  console.log(sections)
   return scheduleFromSections(sections)
 }
 
-export let allSchedules: Schedule[] = []
-/* Array(50000)
-  .fill(0)
-  .map(() => randomSchedule())
-  .filter((schedule) => schedule.valid())
-  */
+export const generateSchedules = async (num: number, hours: number): Promise<Schedule[]> => {
+  return Array(num)
+    .fill(0)
+    .map(() => randomSchedule(hours))
+    .filter((schedule) => schedule.valid())
+    .filter((schedule) => schedule.totalHours() === hours)
+}
