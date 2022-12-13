@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import ScheduleComponent from './components/ScheduleComponent.svelte'
-  import { allSchedules, initialize, Meeting } from './schedule'
+  import { allSchedules, initialize, Meeting, Schedule } from './schedule'
 
   let schedules = allSchedules
 
@@ -40,7 +40,28 @@
       }
     })
   })
+
+  const sort = ({ currentTarget }: { currentTarget: HTMLSelectElement }) => {
+    const heuristic: (s: Schedule) => number = {
+      gaps: (s: Schedule) => s.totalGaps(),
+      'last-time': (s: Schedule) => s.maxEndTime(),
+      friday: (s: Schedule) => s.fridayLast(),
+      variance: (s: Schedule) => s.deviation(),
+      cohesivity: (s: Schedule) => s.cohesivity()
+    }[currentTarget.value]
+
+    schedules.sort((x, y) => heuristic(x) - heuristic(y))
+    schedules = schedules
+  }
 </script>
+
+<select name="a" id="a" on:input={sort}>
+  <option value="gaps">Gaps</option>
+  <option value="last-time">Last Time</option>
+  <option value="friday">Friday</option>
+  <option value="variance">Variance</option>
+  <option value="cohesivity">Cohesivity</option>
+</select>
 
 <div class="grid">
   {#if focused !== undefined}

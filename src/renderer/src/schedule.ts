@@ -217,7 +217,7 @@ export const initialize = (sectionMap: SectionMap): void => {
     .fill(0)
     .map(() => randomSchedule())
     .filter((schedule) => schedule.valid())
-    .filter((schedule) => schedule.totalHours() === 18)
+    .filter((schedule) => schedule.totalHours() === 30)
 
   allSchedules.sort((x, y) => +(x.averageGaps() - y.averageGaps()))
   // allSchedules.sort((x, y) => +(x.cohesivity() - y.cohesivity()))
@@ -258,7 +258,7 @@ const randomSchedule = (): Schedule => {
         break
       }
     }
-    if (scheduleFromSections(sections).totalHours() >= 18) break
+    if (scheduleFromSections(sections).totalHours() >= 30) break
   }
   console.log(sections)
   return scheduleFromSections(sections)
