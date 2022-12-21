@@ -4,7 +4,7 @@
 	import { fixedTime, humanTime, unique } from '../lib/util';
 	import ScheduleComponent from './components/ScheduleComponent.svelte';
 	import { generateSchedules, initialize, Meeting, Schedule } from './schedule';
-	import sections from './assets/sectiosn.json?raw';
+	import sections from './assets/data.json?raw';
 
 	let schedules: Schedule[] | undefined = undefined;
 
@@ -92,34 +92,34 @@
 	};
 
 	const breaks: SmartBreak[] = [
-		{
-			name: 'lunch',
-			days: 'MTWRF',
-			options: [
-				...[...Array(3).keys()]
-					.map((n) => [
-						{
-							startTime: fixedTime(1100 + 100 * n),
-							endTime: fixedTime(1100 + 100 * n + 30)
-						},
-						{
-							startTime: fixedTime(1130 + 100 * n),
-							endTime: fixedTime(1130 + 100 * n + 30)
-						}
-					])
-					.flat()
-			]
-		},
-		{
-			name: 'cpc',
-			days: 'W',
-			options: [
-				{
-					startTime: fixedTime(1730),
-					endTime: fixedTime(1800)
-				}
-			]
-		}
+		// {
+		// 	name: 'lunch',
+		// 	days: 'MTWRF',
+		// 	options: [
+		// 		...[...Array(3).keys()]
+		// 			.map((n) => [
+		// 				{
+		// 					startTime: fixedTime(1100 + 100 * n),
+		// 					endTime: fixedTime(1100 + 100 * n + 30)
+		// 				},
+		// 				{
+		// 					startTime: fixedTime(1130 + 100 * n),
+		// 					endTime: fixedTime(1130 + 100 * n + 30)
+		// 				}
+		// 			])
+		// 			.flat()
+		// 	]
+		// },
+		// {
+		// 	name: 'cpc',
+		// 	days: 'W',
+		// 	options: [
+		// 		{
+		// 			startTime: fixedTime(1730),
+		// 			endTime: fixedTime(1800)
+		// 		}
+		// 	]
+		// }
 	];
 
 	const generate = () => {
