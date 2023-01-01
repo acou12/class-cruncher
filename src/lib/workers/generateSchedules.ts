@@ -18,10 +18,12 @@ export type Input = { total: number; hours: number; sort: string };
 
 self.addEventListener('message', async (e: MessageEvent<Input>) => {
 	initialize(JSON.parse(sections));
-	const schedules = await generateSchedules(e.data.total, e.data.hours);
+	const schedules = await generateSchedules(e.data.total, e.data.hours, (n) =>
+		postMessage({ type: 'progress', n })
+	);
 	const heuristic = sortingHeuristics.find((heuristic) => heuristic.name === e.data.sort)!.sort;
 	schedules.sort((a, b) => heuristic(a) - heuristic(b));
-	postMessage(schedules.map(serialize));
+	postMessage({ type: 'schedules', schedules: schedules.map(serialize) });
 });
 
 export {};

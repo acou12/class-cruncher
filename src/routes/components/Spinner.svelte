@@ -11,9 +11,9 @@
 	}
 
 	.spinner {
+		background-color: orange;
 		width: 100px;
 		height: 100px;
-		background-color: orange;
 		animation: spin 3s infinite;
 	}
 </style>

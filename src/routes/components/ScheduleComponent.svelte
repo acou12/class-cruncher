@@ -65,7 +65,7 @@
 
 <style lang="scss">
 	.selected {
-		border: solid black 3px;
+		outline: solid black 3px;
 		z-index: 10 !important;
 	}
 

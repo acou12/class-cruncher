@@ -287,10 +287,23 @@ export const randomSchedule = (hours: number): Schedule => {
 	return scheduleFromSections(sections);
 };
 
-export const generateSchedules = async (num: number, hours: number): Promise<Schedule[]> => {
-	return Array(num)
-		.fill(0)
-		.map(() => randomSchedule(hours))
+export const generateSchedules = async (
+	num: number,
+	hours: number,
+	progress: (n: number) => void
+): Promise<Schedule[]> => {
+	const result: Schedule[] = [];
+	const PRECISION = 100;
+	let lastPercent = 0;
+	progress(0);
+	for (let i = 0; i < num; i++) {
+		result.push(randomSchedule(hours));
+		const percent = Math.floor((i / num) * PRECISION) / PRECISION;
+		if (percent > lastPercent) {
+			progress(percent);
+		}
+	}
+	return result
 		.filter((schedule) => schedule.valid())
 		.filter((schedule) => schedule.totalHours() === hours);
 };

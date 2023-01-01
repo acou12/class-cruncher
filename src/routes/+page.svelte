@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import { fixedTime, humanTime, unique } from '$lib/util';
 	import ScheduleComponent from './components/ScheduleComponent.svelte';
+	import FullscreenComponent from './components/FullscreenComponent.svelte';
 	import sections from './assets/data.json?raw';
 	import {
 		deserialize,
@@ -22,35 +23,13 @@
 	let focused: number | undefined;
 	$: focusedSchedule = focused === undefined ? undefined : schedules![focused];
 
-	let selectedMeeting: Meeting | undefined = undefined;
-
 	let schedulesWorkers: Worker;
+
+	let progress: number = 0;
+	let finalProgressTimeout: NodeJS.Timeout;
 
 	onMount(async () => {
 		initialize(JSON.parse(sections));
-		schedulesWorkers = new (await import('$lib/workers/generateSchedules?worker')).default();
-		schedulesWorkers.onmessage = (e) => {
-			schedules = (e.data as SerializedSchedule[]).map(deserialize);
-			// 	schedules = schedules.filter((schedule) =>
-			// 		breaks.every((smartBreak) =>
-			// 			smartBreak.options.some(
-			// 				(option) =>
-			// 					![...smartBreak.days].some((day) =>
-			// 						schedule.days[[...'MTWRF'].indexOf(day)].meetings.some(
-			// 							// todo: timeslot class with `intersects` method
-			// 							(meeting) =>
-			// 								(meeting.startTime <= option.startTime &&
-			// 									option.startTime <= meeting.endTime) ||
-			// 								(meeting.startTime <= option.endTime && option.endTime <= meeting.endTime) ||
-			// 								(option.startTime <= meeting.startTime &&
-			// 									meeting.startTime <= option.endTime) ||
-			// 								(option.startTime <= meeting.endTime && meeting.endTime <= option.endTime)
-			// 						)
-			// 					)
-			// 			)
-			// 		)
-			// 	);
-		};
 		generate();
 		document.addEventListener('keydown', (event) => {
 			if (event.key === 'Escape') {
@@ -110,14 +89,56 @@
 		// }
 	];
 
-	const generate = () => {
+	const generate = async () => {
+		progress = 0;
 		schedules = undefined;
+		schedulesWorkers = new (await import('$lib/workers/generateSchedules?worker')).default();
+		schedulesWorkers.onmessage = (e) => {
+			switch (e.data.type) {
+				case 'progress':
+					progress = e.data.n;
+					break;
+				case 'schedules':
+					progress = 1;
+					finalProgressTimeout = setTimeout(() => {
+						schedules = (e.data.schedules as SerializedSchedule[]).map(deserialize);
+						schedules = schedules.filter((schedule) =>
+							breaks.every((smartBreak) =>
+								smartBreak.options.some(
+									(option) =>
+										![...smartBreak.days].some((day) =>
+											schedule.days[[...'MTWRF'].indexOf(day)].meetings.some(
+												// todo: timeslot class with `intersects` method
+												(meeting) =>
+													(meeting.startTime <= option.startTime &&
+														option.startTime <= meeting.endTime) ||
+													(meeting.startTime <= option.endTime &&
+														option.endTime <= meeting.endTime) ||
+													(option.startTime <= meeting.startTime &&
+														meeting.startTime <= option.endTime) ||
+													(option.startTime <= meeting.endTime && meeting.endTime <= option.endTime)
+											)
+										)
+								)
+							)
+						);
+					}, 200);
+					break;
+			}
+		};
 		schedulesWorkers.postMessage({
 			total: parseInt(totalInput.value),
 			hours: parseInt(hoursInput.value),
 			sort: sortSelect.value
 		} as GenerateSchedulesInput);
 		// sort();
+	};
+
+	const cancel = () => {
+		// todo: possible performance issues with consistent termination of threads
+		schedulesWorkers.terminate();
+		schedules = [];
+		clearTimeout(finalProgressTimeout);
 	};
 
 	let sortSelect: HTMLSelectElement;
@@ -129,7 +150,7 @@
 	<h1>Class Cruncher <button class="generate" on:click={generate}>GENERATE</button></h1>
 	<div class="options">
 		<div class="option">
-			Sort algorithm: <select name="sort" bind:this={sortSelect} on:input={sort}>
+			Sort algorithm: <select name="sort" bind:this={sortSelect} on:input={sort} value="Gaps">
 				{#each sortingHeuristics as sort}
 					<option value={sort.name}>{sort.name}</option>
 				{/each}
@@ -162,70 +183,31 @@
 	</div>
 </header>
 
-<div class="grid">
-	{#if focused !== undefined && focusedSchedule !== undefined}
-		<div class="fullscreen">
-			<button
-				class="close"
-				on:click={() => (focused = undefined)}
-				on:keydown={() => (focused = undefined)}
-			>
-				Back
-			</button>
-			<div class="grid">
-				<ScheduleComponent bind:schedule={focusedSchedule} bind:selectedMeeting interactable />
-				<div class="sidebar">
-					<h2>Legend</h2>
-					<div class="section-grid">
-						{#each focusedSchedule.sections as section}
-							<div>
-								<span class="circle" style="background-color: #{section.parentCourse.color};" />
-								{section.parentCourse.name} ({unique(
-									section.meetings.map((meeting) => meeting.day)
-								).join('')})
-							</div>
-						{/each}
-					</div>
-					<h2>Schedule Stats</h2>
-					<div class="stat">
-						<strong>Hours</strong> - {focusedSchedule.totalHours()} credit hours
-					</div>
-					<div class="stat">
-						<strong>Total Gaps</strong> - {focusedSchedule.totalGaps()} minutes {focusedSchedule.minimallyGapped()
-							? '(MINIMALLY GAPPED!)'
-							: ''}
-					</div>
-					<div class="stat">
-						<strong>Average Gap</strong> - {focusedSchedule.averageGaps().toFixed(1)} minutes
-					</div>
-
-					<div class="stat">
-						<strong>Last Time</strong> - {humanTime(focusedSchedule.maxEndTime())}
-					</div>
-					{#if selectedMeeting !== undefined}
-						<h2>Selected Section - {selectedMeeting.parentSection.parentCourse.name}</h2>
-						{#each selectedMeeting.parentSection.meetings as meeting}
-							<div>
-								{meeting.day} at {humanTime(meeting.startTime)} to {humanTime(meeting.endTime)}
-							</div>
-						{/each}
-					{/if}
-				</div>
-			</div>
-		</div>
-	{/if}
-	{#if schedules !== undefined}
+{#if schedules !== undefined}
+	<div class="grid">
+		{#if focused !== undefined && focusedSchedule !== undefined}
+			<FullscreenComponent bind:focused bind:focusedSchedule />
+		{/if}
 		{#each schedules.slice(0, 100) as schedule, i}
 			<div class="schedule-wrapper" on:keydown={() => (focused = i)} on:click={() => (focused = i)}>
 				<ScheduleComponent {schedule} />
 			</div>
 		{/each}
-	{:else}
+		<div class="info" />
+	</div>
+{:else}
+	<div class="centered">
 		<Spinner />
-		<!-- <p>Loading schedules...</p> -->
-	{/if}
-	<div class="info" />
-</div>
+	</div>
+	<div class="centered">
+		<div class="outer-progress-bar">
+			<div class="progress-bar" style={`width:${progress * 200}px`} />
+		</div>
+	</div>
+	<div class="centered">
+		<button on:click={cancel}>cancel</button>
+	</div>
+{/if}
 
 <style lang="scss">
 	header {
@@ -253,28 +235,24 @@
 		}
 	}
 
-	.fullscreen {
-		position: fixed;
-		left: 0vw;
-		top: 0vh;
-		width: 100vw;
-		z-index: 1;
-		background-color: white;
-		.grid {
-			padding: 0;
-			display: grid;
-			margin: 5vh 5vw;
-			width: 90vw;
-			height: 90vh;
-			grid-template-columns: 3fr 2fr;
-			.sidebar {
-				padding: 0px 30px;
-			}
-		}
+	.centered {
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
-	.section-grid {
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
+	.outer-progress-bar {
+		outline: solid 2px orange;
+		border-radius: 6px;
+		margin-top: 30px;
+		margin-bottom: 10px;
+		width: 200px;
+		overflow: clip;
+	}
+
+	.progress-bar {
+		height: 30px;
+		background-color: orange;
+		/* transition: width 1s linear; */
 	}
 </style>
