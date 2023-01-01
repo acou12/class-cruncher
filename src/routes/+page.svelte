@@ -17,11 +17,10 @@
 	} from '$lib/schedule';
 	import type { Input as GenerateSchedulesInput } from '$lib/workers/generateSchedules';
 	import Spinner from './components/Spinner.svelte';
-
-	let schedules: Schedule[] | undefined = undefined;
+	import { schedules } from '$lib/stores';
 
 	let focused: number | undefined;
-	$: focusedSchedule = focused === undefined ? undefined : schedules![focused];
+	$: focusedSchedule = focused === undefined ? undefined : $schedules![focused];
 
 	let schedulesWorkers: Worker;
 
@@ -30,7 +29,7 @@
 
 	onMount(async () => {
 		initialize(JSON.parse(sections));
-		generate();
+		// generate();
 		document.addEventListener('keydown', (event) => {
 			if (event.key === 'Escape') {
 				focused = undefined;
@@ -39,14 +38,13 @@
 	});
 
 	const sort = () => {
-		if (schedules === undefined) return;
+		if ($schedules === undefined) return;
 
 		const heuristic: (schedule: Schedule) => number = sortingHeuristics.find(
 			(sh) => sh.name === sortSelect.value
 		)!.sort;
 
-		schedules.sort((x, y) => heuristic(x) - heuristic(y));
-		schedules = schedules;
+		schedules.set($schedules.sort((x, y) => heuristic(x) - heuristic(y)));
 	};
 
 	type SmartBreak = {
@@ -91,7 +89,7 @@
 
 	const generate = async () => {
 		progress = 0;
-		schedules = undefined;
+		schedules.set(undefined);
 		schedulesWorkers = new (await import('$lib/workers/generateSchedules?worker')).default();
 		schedulesWorkers.onmessage = (e) => {
 			switch (e.data.type) {
@@ -101,24 +99,27 @@
 				case 'schedules':
 					progress = 1;
 					finalProgressTimeout = setTimeout(() => {
-						schedules = (e.data.schedules as SerializedSchedule[]).map(deserialize);
-						schedules = schedules.filter((schedule) =>
-							breaks.every((smartBreak) =>
-								smartBreak.options.some(
-									(option) =>
-										![...smartBreak.days].some((day) =>
-											schedule.days[[...'MTWRF'].indexOf(day)].meetings.some(
-												// todo: timeslot class with `intersects` method
-												(meeting) =>
-													(meeting.startTime <= option.startTime &&
-														option.startTime <= meeting.endTime) ||
-													(meeting.startTime <= option.endTime &&
-														option.endTime <= meeting.endTime) ||
-													(option.startTime <= meeting.startTime &&
-														meeting.startTime <= option.endTime) ||
-													(option.startTime <= meeting.endTime && meeting.endTime <= option.endTime)
+						schedules.set((e.data.schedules as SerializedSchedule[]).map(deserialize));
+						schedules.set(
+							$schedules!.filter((schedule) =>
+								breaks.every((smartBreak) =>
+									smartBreak.options.some(
+										(option) =>
+											![...smartBreak.days].some((day) =>
+												schedule.days[[...'MTWRF'].indexOf(day)].meetings.some(
+													// todo: timeslot class with `intersects` method
+													(meeting) =>
+														(meeting.startTime <= option.startTime &&
+															option.startTime <= meeting.endTime) ||
+														(meeting.startTime <= option.endTime &&
+															option.endTime <= meeting.endTime) ||
+														(option.startTime <= meeting.startTime &&
+															meeting.startTime <= option.endTime) ||
+														(option.startTime <= meeting.endTime &&
+															meeting.endTime <= option.endTime)
+												)
 											)
-										)
+									)
 								)
 							)
 						);
@@ -137,7 +138,7 @@
 	const cancel = () => {
 		// todo: possible performance issues with consistent termination of threads
 		schedulesWorkers.terminate();
-		schedules = [];
+		schedules.set([]);
 		clearTimeout(finalProgressTimeout);
 	};
 
@@ -183,15 +184,19 @@
 	</div>
 </header>
 
-{#if schedules !== undefined}
+{#if $schedules !== undefined}
 	<div class="grid">
-		{#if focused !== undefined && focusedSchedule !== undefined}
-			<FullscreenComponent bind:focused bind:focusedSchedule />
-		{/if}
-		{#each schedules.slice(0, 100) as schedule, i}
-			<div class="schedule-wrapper" on:keydown={() => (focused = i)} on:click={() => (focused = i)}>
-				<ScheduleComponent {schedule} />
-			</div>
+		{#each $schedules.slice(0, 100) as schedule, i}
+			<a href="/schedules/{schedule.id}">
+				<!-- <div
+					class="schedule-wrapper"
+					on:keydown={() => (focused = i)}
+					on:click={() => (focused = i)}
+				> -->
+				<div class="schedule-wrapper">
+					<ScheduleComponent {schedule} />
+				</div>
+			</a>
 		{/each}
 		<div class="info" />
 	</div>

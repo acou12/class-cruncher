@@ -1,22 +1,25 @@
 <script lang="ts">
+	import { schedules } from '$lib/stores';
 	import type { Meeting, Schedule } from '$lib/schedule';
 	import { humanTime, unique } from '$lib/util';
-	import ScheduleComponent from './ScheduleComponent.svelte';
+	import ScheduleComponent from '../../components/ScheduleComponent.svelte';
 
-	export let focusedSchedule: Schedule;
 	let selectedMeeting: Meeting;
+
+	export let data: { id: string };
+	const schedule = $schedules!.find((schedule) => schedule.id === data.id)!;
 </script>
 
 <div class="fullscreen">
 	<a class="close" href="/"> Back </a>
 	<div class="grid">
 		<div class="schedule-wrapper">
-			<ScheduleComponent bind:schedule={focusedSchedule} bind:selectedMeeting interactable />
+			<ScheduleComponent {schedule} bind:selectedMeeting interactable />
 		</div>
 		<div class="sidebar">
 			<h2>Legend</h2>
 			<div class="section-grid">
-				{#each focusedSchedule.sections as section}
+				{#each schedule.sections as section}
 					<div>
 						<span class="circle" style="background-color: #{section.parentCourse.color};" />
 						{section.parentCourse.name}
@@ -25,19 +28,19 @@
 			</div>
 			<h2>Schedule Stats</h2>
 			<div class="stat">
-				<strong>Hours</strong> - {focusedSchedule.totalHours()} credit hours
+				<strong>Hours</strong> - {schedule.totalHours()} credit hours
 			</div>
 			<div class="stat">
-				<strong>Total Gaps</strong> - {focusedSchedule.totalGaps()} minutes {focusedSchedule.minimallyGapped()
+				<strong>Total Gaps</strong> - {schedule.totalGaps()} minutes {schedule.minimallyGapped()
 					? '(MINIMALLY GAPPED!)'
 					: ''}
 			</div>
 			<div class="stat">
-				<strong>Average Gap</strong> - {focusedSchedule.averageGaps().toFixed(1)} minutes
+				<strong>Average Gap</strong> - {schedule.averageGaps().toFixed(1)} minutes
 			</div>
 
 			<div class="stat">
-				<strong>Last Time</strong> - {humanTime(focusedSchedule.maxEndTime())}
+				<strong>Last Time</strong> - {humanTime(schedule.maxEndTime())}
 			</div>
 			{#if selectedMeeting !== undefined}
 				<h2>Selected Section - {selectedMeeting.parentSection.parentCourse.name}</h2>
@@ -52,7 +55,7 @@
 </div>
 
 <style lang="scss">
-	@import '../assets/style.scss';
+	@import '../../assets/style.scss';
 
 	.fullscreen {
 		background-color: white;

@@ -36,7 +36,7 @@ class Day {
 }
 
 export class Schedule {
-	constructor(public days: Day[], public sections: Section[]) {}
+	constructor(public id: string, public days: Day[], public sections: Section[]) {}
 
 	allMeetings(): Meeting[] {
 		return this.days.flatMap((day) => day.meetings);
@@ -267,7 +267,13 @@ export const scheduleFromSections = (sections: Section[]): Schedule => {
 		.forEach((meeting) => {
 			days[meeting.day].meetings.push(meeting);
 		});
-	return new Schedule(Object.values(days), [...sections]);
+	return new Schedule(idFromSections(sections), Object.values(days), [...sections]);
+};
+
+const idFromSections = (s: Section[]): string => {
+	const sections = [...s];
+	sections.sort((a, b) => a.id.localeCompare(b.id));
+	return sections.map((section) => section.id).join('--');
 };
 
 export const randomSchedule = (hours: number): Schedule => {
