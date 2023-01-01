@@ -1,4 +1,4 @@
-import { fixedTime, randomColor, shuffled } from '../lib/util';
+import { fixedTime, randomColor, randomElement, shuffled } from '../lib/util';
 
 class Course {
 	constructor(
@@ -10,7 +10,7 @@ class Course {
 }
 
 class Section {
-	constructor(public meetings: Meeting[], public parentCourse: Course) {}
+	constructor(public id: string, public meetings: Meeting[], public parentCourse: Course) {}
 }
 
 export class Meeting {
@@ -185,7 +185,11 @@ type Data = {
 
 type SectionMap = Record<string, Data['sections']>;
 
-const courses: Course[] = [];
+export type SerializedSchedule = {
+	sectionIds: string[];
+};
+
+export const courses: Course[] = [];
 
 export const initialize = async (sectionMap: SectionMap): Promise<void> => {
 	const rawSections: SectionMap = sectionMap;
@@ -194,7 +198,14 @@ export const initialize = async (sectionMap: SectionMap): Promise<void> => {
 		const sections = rawSections[sectionName];
 		const course = new Course(sectionName, randomColor(), sections[0].creditsMax, []);
 		for (const rawSection of sections) {
-			const section = new Section([], course);
+			// todo: better id
+			const section = new Section(
+				`${rawSection.subjectId}${rawSection.course}${rawSection.meetings
+					.map((meeting) => `${meeting.daysRaw}${meeting.startTime}${meeting.endTime}`)
+					.join('-')}`,
+				[],
+				course
+			);
 			section.meetings.push(
 				...rawSection.meetings.flatMap((meeting) =>
 					meeting.daysRaw
@@ -227,6 +238,22 @@ export const initialize = async (sectionMap: SectionMap): Promise<void> => {
 	// console.log(allSchedules)
 };
 
+export const serialize = (schedule: Schedule): SerializedSchedule => {
+	return {
+		sectionIds: schedule.sections.map((section) => section.id)
+	};
+};
+
+export const deserialize = (jschedule: SerializedSchedule) => {
+	const allSections = courses.flatMap((course) => course.sections);
+	const sections = jschedule.sectionIds.map((id) =>
+		allSections.find((section) => section.id === id)
+	);
+	if (sections.some((section) => section === undefined))
+		throw Error('Invalid schedule was deserialized.');
+	return scheduleFromSections(sections as Section[]);
+};
+
 export const scheduleFromSections = (sections: Section[]): Schedule => {
 	const days: Record<string, Day> = {
 		M: new Day([]),
@@ -243,7 +270,7 @@ export const scheduleFromSections = (sections: Section[]): Schedule => {
 	return new Schedule(Object.values(days), [...sections]);
 };
 
-const randomSchedule = (hours: number): Schedule => {
+export const randomSchedule = (hours: number): Schedule => {
 	const sections = [];
 	for (const course of shuffled(courses)) {
 		for (const section of shuffled(course.sections).filter(
@@ -267,3 +294,56 @@ export const generateSchedules = async (num: number, hours: number): Promise<Sch
 		.filter((schedule) => schedule.valid())
 		.filter((schedule) => schedule.totalHours() === hours);
 };
+
+export const randomSection = () => {
+	const allSections = courses.flatMap((course) => course.sections);
+	return randomElement(allSections);
+};
+
+export const sortingHeuristics: {
+	name: string;
+	sort(schedule: Schedule): number;
+}[] = [
+	{
+		name: 'Random',
+		sort(_schedule: Schedule) {
+			return Math.random();
+		}
+	},
+	{
+		name: 'Gaps',
+		sort(schedule: Schedule) {
+			return schedule.totalGaps();
+		}
+	},
+	{
+		name: 'Last Time',
+		sort(schedule: Schedule) {
+			return schedule.maxEndTime();
+		}
+	},
+	{
+		name: 'Friday',
+		sort(schedule: Schedule) {
+			return schedule.fridayLast();
+		}
+	},
+	{
+		name: 'Variance',
+		sort(schedule: Schedule) {
+			return -schedule.deviation();
+		}
+	},
+	{
+		name: 'Cohesivity',
+		sort(schedule: Schedule) {
+			return schedule.cohesivity();
+		}
+	},
+	{
+		name: 'Hours',
+		sort(schedule: Schedule) {
+			return -schedule.totalHours();
+		}
+	}
+];

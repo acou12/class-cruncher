@@ -1,39 +1,39 @@
 <script lang="ts">
-  import type { Meeting, Schedule } from '../schedule'
+	import type { Meeting, Schedule } from '../../lib/schedule';
 
-  export let interactable: boolean = false
-  export let schedule: Schedule
-  export let selectedMeeting: Meeting | undefined = undefined
+	export let interactable: boolean = false;
+	export let schedule: Schedule;
+	export let selectedMeeting: Meeting | undefined = undefined;
 
-  // $: otherOptions =
-  //   selectedMeeting === undefined ? undefined : selectedMeeting.parentSection.parentCourse.sections
+	// $: otherOptions =
+	//   selectedMeeting === undefined ? undefined : selectedMeeting.parentSection.parentCourse.sections
 
-  const fitToHeight = (x: number) => {
-    return (x / (60 * 24)) * 175 - 50
-  }
+	const fitToHeight = (x: number) => {
+		return (x / (60 * 24)) * 175 - 50;
+	};
 </script>
 
 <div class="week">
-  {#each [...Array(12).keys()].slice(1) as y}
-    <div class="hour-divider" style="top: {(y / 12) * 100}%;" />
-  {/each}
-  {#each schedule.days as day}
-    <div class="day">
-      {#each day.meetings as meeting}
-        <div
-          class="meeting"
-          class:selected={selectedMeeting !== undefined &&
-            selectedMeeting.parentSection.meetings.includes(meeting)}
-          style={`
+	{#each [...Array(12).keys()].slice(1) as y}
+		<div class="hour-divider" style="top: {(y / 12) * 100}%;" />
+	{/each}
+	{#each schedule.days as day}
+		<div class="day">
+			{#each day.meetings as meeting}
+				<div
+					class="meeting"
+					class:selected={selectedMeeting !== undefined &&
+						selectedMeeting.parentSection.meetings.includes(meeting)}
+					style={`
                   height: ${fitToHeight(meeting.endTime) - fitToHeight(meeting.startTime)}%;
                   top: ${fitToHeight(meeting.startTime)}%;
                   background-color: #${meeting.parentSection.parentCourse.color};
                 `}
-          on:click={() => interactable && (selectedMeeting = meeting)}
-          on:keydown={() => interactable && (selectedMeeting = meeting)}
-        />
-      {/each}
-      <!-- {#if otherOptions !== undefined}
+					on:click={() => interactable && (selectedMeeting = meeting)}
+					on:keydown={() => interactable && (selectedMeeting = meeting)}
+				/>
+			{/each}
+			<!-- {#if otherOptions !== undefined}
         {#each otherOptions as section}
           <div class="section-group">
             {#each section.meetings
@@ -59,24 +59,24 @@
           </div>
         {/each}
       {/if} -->
-    </div>
-  {/each}
+		</div>
+	{/each}
 </div>
 
 <style lang="scss">
-  .selected {
-    border: solid black 3px;
-    z-index: 10 !important;
-  }
+	.selected {
+		border: solid black 3px;
+		z-index: 10 !important;
+	}
 
-  .alternate {
-    width: 50%;
-    z-index: 1;
-    border: dashed black 1px;
-    background-color: transparent;
-    filter: none !important;
-    &:hover {
-      background-color: rgb(221, 221, 221);
-    }
-  }
+	.alternate {
+		width: 50%;
+		z-index: 1;
+		border: dashed black 1px;
+		background-color: transparent;
+		filter: none !important;
+		&:hover {
+			background-color: rgb(221, 221, 221);
+		}
+	}
 </style>

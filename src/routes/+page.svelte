@@ -1,10 +1,21 @@
 <script lang="ts">
 	import './assets/style.scss';
 	import { onMount } from 'svelte';
-	import { fixedTime, humanTime, unique } from '../lib/util';
+	import { fixedTime, humanTime, unique } from '$lib/util';
 	import ScheduleComponent from './components/ScheduleComponent.svelte';
-	import { generateSchedules, initialize, Meeting, Schedule } from './schedule';
 	import sections from './assets/data.json?raw';
+	import {
+		deserialize,
+		generateSchedules,
+		initialize,
+		Meeting,
+		randomSchedule,
+		Schedule,
+		sortingHeuristics,
+		type SerializedSchedule
+	} from '$lib/schedule';
+	import type { Input as GenerateSchedulesInput } from '$lib/workers/generateSchedules';
+	import Spinner from './components/Spinner.svelte';
 
 	let schedules: Schedule[] | undefined = undefined;
 
@@ -13,8 +24,33 @@
 
 	let selectedMeeting: Meeting | undefined = undefined;
 
+	let schedulesWorkers: Worker;
+
 	onMount(async () => {
 		initialize(JSON.parse(sections));
+		schedulesWorkers = new (await import('$lib/workers/generateSchedules?worker')).default();
+		schedulesWorkers.onmessage = (e) => {
+			schedules = (e.data as SerializedSchedule[]).map(deserialize);
+			// 	schedules = schedules.filter((schedule) =>
+			// 		breaks.every((smartBreak) =>
+			// 			smartBreak.options.some(
+			// 				(option) =>
+			// 					![...smartBreak.days].some((day) =>
+			// 						schedule.days[[...'MTWRF'].indexOf(day)].meetings.some(
+			// 							// todo: timeslot class with `intersects` method
+			// 							(meeting) =>
+			// 								(meeting.startTime <= option.startTime &&
+			// 									option.startTime <= meeting.endTime) ||
+			// 								(meeting.startTime <= option.endTime && option.endTime <= meeting.endTime) ||
+			// 								(option.startTime <= meeting.startTime &&
+			// 									meeting.startTime <= option.endTime) ||
+			// 								(option.startTime <= meeting.endTime && meeting.endTime <= option.endTime)
+			// 						)
+			// 					)
+			// 			)
+			// 		)
+			// 	);
+		};
 		generate();
 		document.addEventListener('keydown', (event) => {
 			if (event.key === 'Escape') {
@@ -22,54 +58,6 @@
 			}
 		});
 	});
-
-	const sortingHeuristics: {
-		name: string;
-		sort(schedule: Schedule): number;
-	}[] = [
-		{
-			name: 'Random',
-			sort(_schedule: Schedule) {
-				return Math.random();
-			}
-		},
-		{
-			name: 'Gaps',
-			sort(schedule: Schedule) {
-				return schedule.totalGaps();
-			}
-		},
-		{
-			name: 'Last Time',
-			sort(schedule: Schedule) {
-				return schedule.maxEndTime();
-			}
-		},
-		{
-			name: 'Friday',
-			sort(schedule: Schedule) {
-				return schedule.fridayLast();
-			}
-		},
-		{
-			name: 'Variance',
-			sort(schedule: Schedule) {
-				return -schedule.deviation();
-			}
-		},
-		{
-			name: 'Cohesivity',
-			sort(schedule: Schedule) {
-				return schedule.cohesivity();
-			}
-		},
-		{
-			name: 'Hours',
-			sort(schedule: Schedule) {
-				return -schedule.totalHours();
-			}
-		}
-	];
 
 	const sort = () => {
 		if (schedules === undefined) return;
@@ -124,29 +112,12 @@
 
 	const generate = () => {
 		schedules = undefined;
-		setTimeout(async () => {
-			schedules = await generateSchedules(parseInt(totalInput.value), parseInt(hoursInput.value));
-			schedules = schedules.filter((schedule) =>
-				breaks.every((smartBreak) =>
-					smartBreak.options.some(
-						(option) =>
-							![...smartBreak.days].some((day) =>
-								schedule.days[[...'MTWRF'].indexOf(day)].meetings.some(
-									// todo: timeslot class with `intersects` method
-									(meeting) =>
-										(meeting.startTime <= option.startTime &&
-											option.startTime <= meeting.endTime) ||
-										(meeting.startTime <= option.endTime && option.endTime <= meeting.endTime) ||
-										(option.startTime <= meeting.startTime &&
-											meeting.startTime <= option.endTime) ||
-										(option.startTime <= meeting.endTime && meeting.endTime <= option.endTime)
-								)
-							)
-					)
-				)
-			);
-			sort();
-		}, 1);
+		schedulesWorkers.postMessage({
+			total: parseInt(totalInput.value),
+			hours: parseInt(hoursInput.value),
+			sort: sortSelect.value
+		} as GenerateSchedulesInput);
+		// sort();
 	};
 
 	let sortSelect: HTMLSelectElement;
@@ -194,6 +165,13 @@
 <div class="grid">
 	{#if focused !== undefined && focusedSchedule !== undefined}
 		<div class="fullscreen">
+			<button
+				class="close"
+				on:click={() => (focused = undefined)}
+				on:keydown={() => (focused = undefined)}
+			>
+				Back
+			</button>
 			<div class="grid">
 				<ScheduleComponent bind:schedule={focusedSchedule} bind:selectedMeeting interactable />
 				<div class="sidebar">
@@ -243,7 +221,8 @@
 			</div>
 		{/each}
 	{:else}
-		<p>Loading schedules...</p>
+		<Spinner />
+		<!-- <p>Loading schedules...</p> -->
 	{/if}
 	<div class="info" />
 </div>
@@ -281,7 +260,6 @@
 		width: 100vw;
 		z-index: 1;
 		background-color: white;
-		overflow: scroll;
 		.grid {
 			padding: 0;
 			display: grid;
