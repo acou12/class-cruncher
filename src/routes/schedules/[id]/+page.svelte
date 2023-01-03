@@ -3,11 +3,27 @@
 	import type { Meeting, Schedule } from '$lib/schedule';
 	import { humanTime, unique } from '$lib/util';
 	import ScheduleComponent from '../../components/ScheduleComponent.svelte';
+	import { goto } from '$app/navigation';
+	import { onMount, onDestroy } from 'svelte';
 
 	let selectedMeeting: Meeting;
 
 	export let data: { id: string };
-	const schedule = $schedules!.find((schedule) => schedule.id === data.id)!;
+	const schedule: Schedule = $schedules!.find((schedule) => schedule.id === data.id)!;
+
+	const exit = (event: KeyboardEvent) => {
+		if (event.key === 'Escape') {
+			goto('/');
+		}
+	};
+
+	onMount(() => {
+		document.addEventListener('keydown', exit);
+	});
+
+	onDestroy(() => {
+		document.removeEventListener('keydown', exit);
+	});
 </script>
 
 <div class="fullscreen">
@@ -46,16 +62,33 @@
 				<h2>Selected Section - {selectedMeeting.parentSection.parentCourse.name}</h2>
 				{#each selectedMeeting.parentSection.meetings as meeting}
 					<div>
-						{meeting.day} at {humanTime(meeting.startTime)} to {humanTime(meeting.endTime)}
+						{meeting.day} at {humanTime(meeting.startTime)} to {humanTime(meeting.endTime)} at {meeting
+							.location.name}
+						{meeting.location.coords !== undefined
+							? `(${meeting.location.coords.lat}, ${meeting.location.coords.lng})`
+							: ``}
 					</div>
 				{/each}
 			{/if}
 		</div>
 	</div>
+	{#each schedule.days as day, i}
+		<h2>{['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'][i]} Route</h2>
+		{#if day.generateIFrameLink() === ''}
+			No classes today.
+		{:else}
+			<iframe
+				width="100%"
+				height="500px"
+				title="Route of the selected schedule"
+				src={day.generateIFrameLink()}
+			/>
+		{/if}
+	{/each}
 </div>
 
 <style lang="scss">
-	@import '../../assets/style.scss';
+	@import '../../assets/button.scss';
 
 	.fullscreen {
 		background-color: white;
@@ -79,9 +112,5 @@
 	.section-grid {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
-	}
-
-	.back {
-		@include button(blue);
 	}
 </style>

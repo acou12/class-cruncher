@@ -9,6 +9,45 @@ class Course {
 	) {}
 }
 
+class Location {
+	constructor(public name: string, public coords: Coordinates[number]['coords'] | undefined) {}
+
+	distance(other: Location) {
+		// todo: compare accuracy with spherical taxicab distance
+		// todo 2: use google maps distance matrix for a more accurate distance
+
+		if (this.coords === undefined || other.coords === undefined) return 0;
+
+		// https://en.wikipedia.org/wiki/Great-circle_distance#Computational_formulas
+		const deltaLambda = other.coords.lng - this.coords.lng;
+		const deltaPhi = other.coords.lat - this.coords.lat;
+		// prettier-ignore
+		return (
+			2 *
+			Math.asin(
+				Math.sqrt(
+					Math.pow(
+						Math.sin(deltaPhi / 2), 
+					2)
+					+ (
+						1 
+						- Math.pow(
+							Math.sin(deltaPhi / 2), 
+						2) 
+						- Math.pow(
+							Math.sin((this.coords.lat + other.coords.lat) / 2), 
+						2)
+					) * (
+						Math.pow(
+							Math.sin(deltaLambda / 2),
+						2)
+					)
+				)
+			)
+		);
+	}
+}
+
 class Section {
 	constructor(public id: string, public meetings: Meeting[], public parentCourse: Course) {}
 }
@@ -18,9 +57,13 @@ export class Meeting {
 		public startTime: number,
 		public endTime: number,
 		public day: string,
+		public location: Location,
 		public parentSection: Section
 	) {}
 }
+
+const googleAddress = (address: string) =>
+	address.replace(/ [a-zA-Z]?[0-9]+$/, '') + ', Columbus, OSU';
 
 class Day {
 	constructor(public meetings: Meeting[]) {}
@@ -32,6 +75,38 @@ class Day {
 			result.push(this.meetings[i + 1].startTime - this.meetings[i].endTime);
 		}
 		return result;
+	}
+
+	distances(): number[] {
+		const result = [];
+		this.meetings.sort((x, y) => x.startTime - y.startTime);
+		for (let i = 0; i < this.meetings.length - 1; i++) {
+			result.push(this.meetings[i + 1].location.distance(this.meetings[i].location));
+		}
+		return result;
+	}
+
+	generateIFrameLink(): string {
+		if (this.meetings.length === 0) return '';
+		this.meetings.sort((x, y) => x.startTime - y.startTime);
+		let start = googleAddress(this.meetings[0].location.name);
+
+		let end: string | undefined = undefined;
+		if (this.meetings.length > 1) {
+			end = googleAddress(this.meetings[this.meetings.length - 1].location.name);
+		}
+
+		let waypoints: string[] | undefined = undefined;
+		if (this.meetings.length > 2) {
+			waypoints = this.meetings
+				.slice(1, this.meetings.length - 1)
+				.map((meeting) => googleAddress(meeting.location.name));
+		}
+		return `https://www.google.com/maps/embed/v1/directions?key=AIzaSyC1b5ar7tO-7uOvl_0V7j-Mw0_wML-XzPI
+						&origin=${start}
+						${waypoints === undefined ? '' : `&waypoints=${waypoints.join('|')}`}
+						&destination=${end === undefined ? start : end}
+						&mode=walking`;
 	}
 }
 
@@ -65,6 +140,16 @@ export class Schedule {
 	averageGaps(): number {
 		const gaps = this.days.flatMap((day) => day.gaps());
 		return [0, ...gaps].reduce((acc, x) => acc + x) / gaps.length;
+	}
+
+	totalDistances(): number {
+		const distances = this.days.flatMap((day) => day.distances());
+		return [0, ...distances].reduce((acc, x) => acc + x);
+	}
+
+	averageDistances(): number {
+		const distances = this.days.flatMap((day) => day.distances());
+		return [0, ...distances].reduce((acc, x) => acc + x) / distances.length;
 	}
 
 	cohesivity(): number {
@@ -184,6 +269,7 @@ type Data = {
 // }
 
 type SectionMap = Record<string, Data['sections']>;
+type Coordinates = { name: string; coords: { lat: number; lng: number } }[];
 
 export type SerializedSchedule = {
 	sectionIds: string[];
@@ -191,8 +277,25 @@ export type SerializedSchedule = {
 
 export const courses: Course[] = [];
 
-export const initialize = async (sectionMap: SectionMap): Promise<void> => {
+export const initialize = async (
+	sectionMap: SectionMap,
+	coordinates: Coordinates
+): Promise<void> => {
 	const rawSections: SectionMap = sectionMap;
+
+	// const locations = unique(
+	// 	Object.values(rawSections)
+	// 		.flatMap((sections) =>
+	// 			sections.flatMap((section) => section.meetings.flatMap((meeting) => meeting.location))
+	// 		)
+	// 		.map((location) => location.replace(/ [a-zA-Z]?[0-9]+$/, ''))
+	// );
+
+	const coordinatesFromLocation = (name: string) => {
+		const matching = coordinates.find((c) => name.startsWith(c.name));
+		if (matching !== undefined) return matching.coords;
+		else return undefined;
+	};
 
 	for (const sectionName in rawSections) {
 		const sections = rawSections[sectionName];
@@ -212,7 +315,13 @@ export const initialize = async (sectionMap: SectionMap): Promise<void> => {
 						.split('')
 						.map(
 							(day) =>
-								new Meeting(fixedTime(meeting.startTime), fixedTime(meeting.endTime), day, section)
+								new Meeting(
+									fixedTime(meeting.startTime),
+									fixedTime(meeting.endTime),
+									day,
+									new Location(meeting.location, coordinatesFromLocation(meeting.location)),
+									section
+								)
 						)
 				)
 			);
@@ -293,18 +402,19 @@ export const randomSchedule = (hours: number): Schedule => {
 	return scheduleFromSections(sections);
 };
 
+export const PROGRESS_PRECISION = 100;
+
 export const generateSchedules = async (
 	num: number,
 	hours: number,
 	progress: (n: number) => void
 ): Promise<Schedule[]> => {
 	const result: Schedule[] = [];
-	const PRECISION = 100;
 	let lastPercent = 0;
 	progress(0);
 	for (let i = 0; i < num; i++) {
 		result.push(randomSchedule(hours));
-		const percent = Math.floor((i / num) * PRECISION) / PRECISION;
+		const percent = Math.floor((i / num) * PROGRESS_PRECISION) / PROGRESS_PRECISION;
 		if (percent > lastPercent) {
 			progress(percent);
 		}
@@ -363,6 +473,12 @@ export const sortingHeuristics: {
 		name: 'Hours',
 		sort(schedule: Schedule) {
 			return -schedule.totalHours();
+		}
+	},
+	{
+		name: 'Distance',
+		sort(schedule: Schedule) {
+			return schedule.averageDistances();
 		}
 	}
 ];

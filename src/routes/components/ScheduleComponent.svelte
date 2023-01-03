@@ -5,9 +5,6 @@
 	export let schedule: Schedule;
 	export let selectedMeeting: Meeting | undefined = undefined;
 
-	// $: otherOptions =
-	//   selectedMeeting === undefined ? undefined : selectedMeeting.parentSection.parentCourse.sections
-
 	const fitToHeight = (x: number) => {
 		return (x / (60 * 24)) * 175 - 50;
 	};
@@ -67,16 +64,5 @@
 	.selected {
 		outline: solid black 3px;
 		z-index: 10 !important;
-	}
-
-	.alternate {
-		width: 50%;
-		z-index: 1;
-		border: dashed black 1px;
-		background-color: transparent;
-		filter: none !important;
-		&:hover {
-			background-color: rgb(221, 221, 221);
-		}
 	}
 </style>

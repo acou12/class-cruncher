@@ -1,16 +1,13 @@
 <script lang="ts">
 	import './assets/style.scss';
 	import { onMount } from 'svelte';
-	import { fixedTime, humanTime, unique } from '$lib/util';
 	import ScheduleComponent from './components/ScheduleComponent.svelte';
-	import FullscreenComponent from './components/FullscreenComponent.svelte';
 	import sections from './assets/data.json?raw';
+	import coordinates from './assets/coordinates.json?raw';
 	import {
 		deserialize,
-		generateSchedules,
 		initialize,
-		Meeting,
-		randomSchedule,
+		PROGRESS_PRECISION,
 		Schedule,
 		sortingHeuristics,
 		type SerializedSchedule
@@ -19,22 +16,13 @@
 	import Spinner from './components/Spinner.svelte';
 	import { schedules } from '$lib/stores';
 
-	let focused: number | undefined;
-	$: focusedSchedule = focused === undefined ? undefined : $schedules![focused];
-
 	let schedulesWorkers: Worker;
 
 	let progress: number = 0;
-	let finalProgressTimeout: NodeJS.Timeout;
 
 	onMount(async () => {
-		initialize(JSON.parse(sections));
+		initialize(JSON.parse(sections), JSON.parse(coordinates));
 		// generate();
-		document.addEventListener('keydown', (event) => {
-			if (event.key === 'Escape') {
-				focused = undefined;
-			}
-		});
 	});
 
 	const sort = () => {
@@ -97,33 +85,30 @@
 					progress = e.data.n;
 					break;
 				case 'schedules':
-					progress = 1;
-					finalProgressTimeout = setTimeout(() => {
-						schedules.set((e.data.schedules as SerializedSchedule[]).map(deserialize));
-						schedules.set(
-							$schedules!.filter((schedule) =>
-								breaks.every((smartBreak) =>
-									smartBreak.options.some(
-										(option) =>
-											![...smartBreak.days].some((day) =>
-												schedule.days[[...'MTWRF'].indexOf(day)].meetings.some(
-													// todo: timeslot class with `intersects` method
-													(meeting) =>
-														(meeting.startTime <= option.startTime &&
-															option.startTime <= meeting.endTime) ||
-														(meeting.startTime <= option.endTime &&
-															option.endTime <= meeting.endTime) ||
-														(option.startTime <= meeting.startTime &&
-															meeting.startTime <= option.endTime) ||
-														(option.startTime <= meeting.endTime &&
-															meeting.endTime <= option.endTime)
-												)
+					progress = 0;
+					schedules.set((e.data.schedules as SerializedSchedule[]).map(deserialize));
+					schedules.set(
+						$schedules!.filter((schedule) =>
+							breaks.every((smartBreak) =>
+								smartBreak.options.some(
+									(option) =>
+										![...smartBreak.days].some((day) =>
+											schedule.days[[...'MTWRF'].indexOf(day)].meetings.some(
+												// todo: timeslot class with `intersects` method
+												(meeting) =>
+													(meeting.startTime <= option.startTime &&
+														option.startTime <= meeting.endTime) ||
+													(meeting.startTime <= option.endTime &&
+														option.endTime <= meeting.endTime) ||
+													(option.startTime <= meeting.startTime &&
+														meeting.startTime <= option.endTime) ||
+													(option.startTime <= meeting.endTime && meeting.endTime <= option.endTime)
 											)
-									)
+										)
 								)
 							)
-						);
-					}, 200);
+						)
+					);
 					break;
 			}
 		};
@@ -139,7 +124,6 @@
 		// todo: possible performance issues with consistent termination of threads
 		schedulesWorkers.terminate();
 		schedules.set([]);
-		clearTimeout(finalProgressTimeout);
 	};
 
 	let sortSelect: HTMLSelectElement;
@@ -206,7 +190,10 @@
 	</div>
 	<div class="centered">
 		<div class="outer-progress-bar">
-			<div class="progress-bar" style={`width:${progress * 200}px`} />
+			<div
+				class="progress-bar"
+				style={`width:${(progress * 200) / (1 - 1 / PROGRESS_PRECISION)}px`}
+			/>
 		</div>
 	</div>
 	<div class="centered">

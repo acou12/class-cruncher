@@ -1,0 +1,144 @@
+[
+  {
+    "name": "Atwell Hall",
+    "coords": { "lat": 39.9936549, "lng": -83.01873309999999 }
+  },
+  {
+    "name": "McPherson Lab",
+    "coords": { "lat": 40.0025136, "lng": -83.01233959999999 }
+  },
+  { "name": "Page Hall", "coords": { "lat": 39.9991603, "lng": -83.0097 } },
+  {
+    "name": "Hagerty Hall",
+    "coords": { "lat": 39.9984393, "lng": -83.01020609999999 }
+  },
+  {
+    "name": "Enarson Classroom Bldg",
+    "coords": { "lat": 40.0021772, "lng": -83.01677520000001 }
+  },
+  {
+    "name": "Parker Food Sci Bldg",
+    "coords": { "lat": 39.9611755, "lng": -82.99879419999999 }
+  },
+  {
+    "name": "Sullivant Hall",
+    "coords": { "lat": 39.999466, "lng": -83.0086445 }
+  },
+  {
+    "name": "Knowlton Hall",
+    "coords": { "lat": 40.0035858, "lng": -83.016919 }
+  },
+  {
+    "name": "Timashev Building",
+    "coords": { "lat": 40.0005025, "lng": -83.01002919999999 }
+  },
+  {
+    "name": "Journalism Bldg",
+    "coords": { "lat": 40.0018214, "lng": -83.0151585 }
+  },
+  {
+    "name": "Cockins Hall",
+    "coords": { "lat": 40.0012742, "lng": -83.01501809999999 }
+  },
+  {
+    "name": "University Hall",
+    "coords": { "lat": 40.0005227, "lng": -83.01443189999999 }
+  },
+  {
+    "name": "Bolz Hall",
+    "coords": { "lat": 40.0030767, "lng": -83.01505519999999 }
+  },
+  {
+    "name": "Baker Systems",
+    "coords": { "lat": 40.0016026, "lng": -83.0159123 }
+  },
+  {
+    "name": "Arps Hall",
+    "coords": { "lat": 40.0018032, "lng": -83.00960370000001 }
+  },
+  {
+    "name": "Howlett Greenhouses",
+    "coords": { "lat": 40.0020621, "lng": -83.02823099999999 }
+  },
+  {
+    "name": "Jennings Hall",
+    "coords": { "lat": 39.996833, "lng": -83.0152985 }
+  },
+  {
+    "name": "Denney Hall",
+    "coords": { "lat": 40.0013114, "lng": -83.01252439999999 }
+  },
+  { "name": "Scott Lab", "coords": { "lat": 40.0022452, "lng": -83.0144211 } },
+  {
+    "name": "Dreese Lab",
+    "coords": { "lat": 40.0023226, "lng": -83.01591119999999 }
+  },
+  {
+    "name": "Caldwell Lab",
+    "coords": { "lat": 40.0024331, "lng": -83.01503369999999 }
+  },
+  {
+    "name": "Hitchcock Hall",
+    "coords": { "lat": 40.0037896, "lng": -83.01501809999999 }
+  },
+  {
+    "name": "Biological Sciences Bldg",
+    "coords": { "lat": 39.9966341, "lng": -83.02016619999999 }
+  },
+  {
+    "name": "Mendenhall Lab",
+    "coords": { "lat": 39.9984105, "lng": -83.0110431 }
+  },
+  { "name": "Hayes Hall", "coords": { "lat": 40.000485, "lng": -83.0111639 } },
+  {
+    "name": "Edison Center",
+    "coords": { "lat": 40.0062497, "lng": -83.0425839 }
+  },
+  { "name": "Derby Hall", "coords": { "lat": 40.0009726, "lng": -83.0122755 } },
+  {
+    "name": "Kottman Hall",
+    "coords": { "lat": 40.0027872, "lng": -83.02686179999999 }
+  },
+  {
+    "name": "Cunz Hall",
+    "coords": { "lat": 39.9985201, "lng": -83.01696799999999 }
+  },
+  {
+    "name": "Weigel Hall",
+    "coords": { "lat": 40.0006035, "lng": -83.0100703 }
+  },
+  { "name": "Smith Lab", "coords": { "lat": 40.0021591, "lng": -83.0132831 } },
+  {
+    "name": "Fontana Lab",
+    "coords": { "lat": 40.0032974, "lng": -83.0121638 }
+  },
+  {
+    "name": "Ramseyer Hall",
+    "coords": { "lat": 40.0033471, "lng": -83.0096581 }
+  },
+  {
+    "name": "PAES Bldg",
+    "coords": { "lat": 40.0002153, "lng": -83.01691679999999 }
+  },
+  {
+    "name": "Psychology Bldg",
+    "coords": { "lat": 39.9985223, "lng": -83.01625659999999 }
+  },
+  { "name": "Parks Hall", "coords": { "lat": 39.9963543, "lng": -83.020879 } },
+  {
+    "name": "Townshend Hall",
+    "coords": { "lat": 39.9997628, "lng": -83.0156441 }
+  },
+  {
+    "name": "Agriculture Engnr Bldg",
+    "coords": { "lat": 40.00547160000001, "lng": -83.0250805 }
+  },
+  {
+    "name": "Evans Lab",
+    "coords": { "lat": 40.0027792, "lng": -83.01109900000002 }
+  },
+  {
+    "name": "Stillman Hall",
+    "coords": { "lat": 40.0017873, "lng": -83.0108228 }
+  }
+]
