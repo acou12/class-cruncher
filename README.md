@@ -9,6 +9,7 @@ A web app for optimizing school schedules.
 ![A demo of the schedule builder with the "credit hours" setting set to 30.](/demos/super-schedules.png)
 ![A fullscreen view of a schedule.](/demos/fullscreen.png)
 ![A fullscreen view of a super schedule (48 credit hours).](/demos/super-schedule-full.png)
+![A visualization for a schedule's Thursday route using the Google Maps API](/demos/maps-integration.png)
 
 ## Ideas
 

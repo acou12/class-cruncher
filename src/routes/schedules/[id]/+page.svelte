@@ -81,6 +81,9 @@
 				width="100%"
 				height="500px"
 				title="Route of the selected schedule"
+				loading="lazy"
+				allowfullscreen
+				referrerpolicy="no-referrer-when-downgrade"
 				src={day.generateIFrameLink()}
 			/>
 		{/if}
