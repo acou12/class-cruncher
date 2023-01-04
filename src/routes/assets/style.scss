@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap');
 @import './button.scss';
 
 * {
@@ -71,6 +70,10 @@ input {
 	left: 20px;
 	top: 20px;
 	@include button(blue);
+}
+
+.edit {
+	@include button(orange);
 }
 
 button {

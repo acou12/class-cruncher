@@ -16,7 +16,7 @@ class Location {
 		// todo: compare accuracy with spherical taxicab distance
 		// todo 2: use google maps distance matrix for a more accurate distance
 
-		if (this.coords === undefined || other.coords === undefined) return 0;
+		if (this.coords === undefined || other.coords === undefined) return Infinity;
 
 		// https://en.wikipedia.org/wiki/Great-circle_distance#Computational_formulas
 		const deltaLambda = other.coords.lng - this.coords.lng;
@@ -48,7 +48,7 @@ class Location {
 	}
 }
 
-class Section {
+export class Section {
 	constructor(public id: string, public meetings: Meeting[], public parentCourse: Course) {}
 }
 

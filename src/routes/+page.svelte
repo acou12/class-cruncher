@@ -1,5 +1,4 @@
 <script lang="ts">
-	import './assets/style.scss';
 	import { onMount } from 'svelte';
 	import ScheduleComponent from './components/ScheduleComponent.svelte';
 	import sections from './assets/data.json?raw';
@@ -9,6 +8,7 @@
 		initialize,
 		PROGRESS_PRECISION,
 		Schedule,
+		serialize,
 		sortingHeuristics,
 		type SerializedSchedule
 	} from '$lib/schedule';
@@ -21,7 +21,6 @@
 	let progress: number = 0;
 
 	onMount(async () => {
-		initialize(JSON.parse(sections), JSON.parse(coordinates));
 		// generate();
 	});
 
@@ -109,6 +108,7 @@
 							)
 						)
 					);
+					localStorage.setItem('data', JSON.stringify({ schedules: $schedules!.map(serialize) }));
 					break;
 			}
 		};
@@ -171,7 +171,7 @@
 {#if $schedules !== undefined}
 	<div class="grid">
 		{#each $schedules.slice(0, 100) as schedule, i}
-			<a href="/schedules/{schedule.id}">
+			<a href="/schedule/{i}">
 				<!-- <div
 					class="schedule-wrapper"
 					on:keydown={() => (focused = i)}
