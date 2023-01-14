@@ -301,6 +301,12 @@ export const initialize = async (
 		const sections = rawSections[sectionName];
 		const course = new Course(sectionName, randomColor(), sections[0].creditsMax, []);
 		for (const rawSection of sections) {
+			if (
+				rawSection.meetings.some(
+					(meeting) => meeting.daysRaw.includes('U') || meeting.daysRaw.includes('S')
+				)
+			)
+				continue;
 			// todo: better id
 			const section = new Section(
 				`${rawSection.subjectId}${rawSection.course}${rawSection.meetings
