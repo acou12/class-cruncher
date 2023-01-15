@@ -1,11 +1,4 @@
-import {
-	fixedTime,
-	randomColor,
-	randomElement,
-	shuffled,
-	stringColor,
-	uniqueBy
-} from '../lib/util';
+import { fixedTime, randomElement, shuffled, stringColor, uniqueBy } from '../lib/util';
 
 export class Course {
 	constructor(
@@ -96,7 +89,7 @@ class Day {
 	generateIFrameLink(): string {
 		if (this.meetings.length === 0) return '';
 		this.meetings.sort((x, y) => x.startTime - y.startTime);
-		let start = googleAddress(this.meetings[0].location.name);
+		const start = googleAddress(this.meetings[0].location.name);
 
 		let end: string | undefined = undefined;
 		if (this.meetings.length > 1) {
@@ -435,12 +428,13 @@ export const generateSchedules = async (
 		const percent = Math.floor((i / num) * PROGRESS_PRECISION) / PROGRESS_PRECISION;
 		if (percent > lastPercent) {
 			progress(percent);
+			lastPercent = percent;
 		}
 	}
 	return uniqueBy(
 		result.filter((schedule) => schedule.valid()),
 		(s1, s2) => s1.equals(s2)
-	).filter(s => s.totalHours() === hours)
+	).filter((s) => s.totalHours() === hours);
 };
 
 export const randomSection = () => {
@@ -454,14 +448,26 @@ export const sortingHeuristics: {
 }[] = [
 	{
 		name: 'Random',
-		sort(_schedule: Schedule) {
+		sort() {
 			return Math.random();
 		}
 	},
+	// {
+	// 	name: 'Smart',
+	// 	sort(schedule: Schedule) {
+	// 		return (
+	// 			[(s) => s.averageGaps(), (s) => s.averageDistances(), (s) => s.maxEndTime()] as ((
+	// 				s: Schedule
+	// 			) => number)[]
+	// 		)
+	// 			.map((f, i) => f(schedule) * Math.pow(10, -i))
+	// 			.reduce((acc, x) => acc + x);
+	// 	}
+	// },
 	{
 		name: 'Gaps',
 		sort(schedule: Schedule) {
-			return schedule.totalGaps();
+			return schedule.averageGaps();
 		}
 	},
 	{
@@ -482,22 +488,36 @@ export const sortingHeuristics: {
 			return -schedule.deviation();
 		}
 	},
-	{
-		name: 'Cohesivity',
-		sort(schedule: Schedule) {
-			return schedule.cohesivity();
-		}
-	},
-	{
-		name: 'Hours',
-		sort(schedule: Schedule) {
-			return -schedule.totalHours();
-		}
-	},
+	// {
+	// 	name: 'Cohesivity',
+	// 	sort(schedule: Schedule) {
+	// 		return schedule.cohesivity();
+	// 	}
+	// },
+	// {
+	// 	name: 'Hours',
+	// 	sort(schedule: Schedule) {
+	// 		return -schedule.totalHours();
+	// 	}
+	// },
 	{
 		name: 'Distance',
 		sort(schedule: Schedule) {
 			return schedule.averageDistances();
+		}
+	},
+	{
+		name: 'Bad',
+		sort(schedule: Schedule) {
+			return (
+				(
+					[(s) => s.averageGaps(), (s) => s.averageDistances(), (s) => s.maxEndTime()] as ((
+						s: Schedule
+					) => number)[]
+				)
+					.map((f, i) => f(schedule) * Math.pow(10, -i))
+					.reduce((acc, x) => acc + x) * -1
+			);
 		}
 	}
 ];

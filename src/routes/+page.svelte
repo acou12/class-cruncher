@@ -15,23 +15,22 @@
 	} from '$lib/schedule';
 	import type { Input as GenerateSchedulesInput } from '$lib/workers/generateSchedules';
 	import Spinner from './components/Spinner.svelte';
-	import { schedules, selectedCourses } from '$lib/stores';
+	import { schedules, selectedCourses, settings } from '$lib/stores';
 
 	let schedulesWorkers: Worker;
 
 	let progress: number = 0;
 
-	onMount(async () => {
-		checked = Array(courses.length).fill(false);
-		// generate();
-	});
+	onMount(async () => {});
 
-	const sort = () => {
+	const sort = ({ currentTarget }: { currentTarget: HTMLSelectElement }) => {
 		if ($schedules === undefined) return;
 
 		const heuristic: (schedule: Schedule) => number = sortingHeuristics.find(
-			(sh) => sh.name === sortSelect.value
+			(sh) => sh.name === currentTarget.value
 		)!.sort;
+
+		console.log(heuristic);
 
 		$schedules = $schedules.sort((x, y) => heuristic(x) - heuristic(y));
 	};
@@ -113,9 +112,9 @@
 			}
 		};
 		schedulesWorkers.postMessage({
-			total: parseInt(totalInput.value),
-			hours: parseInt(hoursInput.value),
-			sort: sortSelect.value,
+			total: parseInt($settings.total),
+			hours: parseInt($settings.hours),
+			sort: $settings.sort,
 			courses: $selectedCourses
 		} as GenerateSchedulesInput);
 		// sort();
@@ -124,17 +123,6 @@
 	const cancel = () => {
 		// todo: possible performance issues with consistent termination of threads
 		schedulesWorkers.terminate();
-		$schedules = [];
-	};
-
-	let sortSelect: HTMLSelectElement;
-	let hoursInput: HTMLInputElement;
-	let totalInput: HTMLInputElement;
-
-	let checked: boolean[] = [];
-
-	const getCheckedCourses = () => {
-		return courses.filter((_course, i) => checked[i]);
 	};
 </script>
 
@@ -142,7 +130,7 @@
 	<h1>Class Cruncher <button class="generate" on:click={generate}>GENERATE</button></h1>
 	<div class="options">
 		<div class="option">
-			Sort algorithm: <select name="sort" bind:this={sortSelect} on:input={sort} value="Gaps">
+			Sort algorithm: <select name="sort" bind:value={$settings.sort} on:input={sort}>
 				{#each sortingHeuristics as sort}
 					<option value={sort.name}>{sort.name}</option>
 				{/each}
@@ -150,31 +138,21 @@
 		</div>
 
 		<div>
-			Preferred credit hours: <input
-				type="text"
-				placeholder="e.g., 18"
-				value={18}
-				bind:this={hoursInput}
-			/>
+			Credit hours: <input type="text" placeholder="e.g., 18" bind:value={$settings.hours} />
 		</div>
 
 		<div>
-			Total generated: <input
-				type="text"
-				placeholder="e.g., 3000"
-				value={3000}
-				bind:this={totalInput}
-			/>
+			Total generated: <input type="text" placeholder="e.g., 3000" bind:value={$settings.total} />
 		</div>
 
-		<div>
+		<!-- <div>
 			Smart breaks: {#each breaks as b}
 				<span class="break">{b.name}</span>
 			{/each}
-		</div>
+		</div> -->
 
 		<div>
-			<a href="/choose">Courses</a>
+			<a class="button" href="/choose">Edit Courses</a>
 			<!-- <summary>Courses</summary>
 				{#each courses as course, i}
 					<div class="course-check">

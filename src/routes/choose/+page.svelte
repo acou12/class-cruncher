@@ -18,10 +18,12 @@
 		($selectedCourses = $selectedCourses.filter((it) => it !== course));
 </script>
 
+<a class="close" href="/">Back</a>
 <div class="center">
 	<h1>Choose your courses</h1>
 	<form on:submit|preventDefault={addCourse}>
 		<input type="text" bind:value={courseName} />
+		<button on:click={() => ($selectedCourses = courses)}>*</button>
 		<input type="submit" value="+" />
 	</form>
 

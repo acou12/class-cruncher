@@ -9,10 +9,11 @@
 		courses,
 		Course
 	} from '$lib/schedule';
-	import { schedules, selectedCourses } from '$lib/stores';
+	import { schedules, selectedCourses, settings, type Settings } from '$lib/stores';
 	import { onMount } from 'svelte';
 	import sections from './assets/data.json?raw';
 	import coordinates from './assets/coordinates.json?raw';
+	import debounce from 'debounce';
 
 	import { fade } from 'svelte/transition';
 
@@ -55,6 +56,21 @@
 				JSON.stringify($selectedCourses.map((course) => course.name))
 			);
 		});
+
+		const savedSettingsStrings = localStorage.getItem('settings');
+		if (savedSettingsStrings === null) {
+			goto('/');
+		} else {
+			const savedSettings: Settings = JSON.parse(savedSettingsStrings);
+			$settings = savedSettings;
+		}
+
+		settings.subscribe(
+			debounce(() => {
+				localStorage.setItem('settings', JSON.stringify($settings));
+				console.log(JSON.stringify($settings));
+			}, 1000)
+		);
 
 		loaded = true;
 	});
