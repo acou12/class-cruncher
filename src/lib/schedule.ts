@@ -1,6 +1,13 @@
-import { fixedTime, randomColor, randomElement, shuffled } from '../lib/util';
+import {
+	fixedTime,
+	randomColor,
+	randomElement,
+	shuffled,
+	stringColor,
+	uniqueBy
+} from '../lib/util';
 
-class Course {
+export class Course {
 	constructor(
 		public name: string,
 		public color: string,
@@ -193,6 +200,10 @@ export class Schedule {
 			(acc, x) => acc + x
 		);
 	}
+
+	equals(other: Schedule): boolean {
+		return this.sections.every((section) => other.sections.includes(section));
+	}
 }
 
 type Data = {
@@ -299,7 +310,7 @@ export const initialize = async (
 
 	for (const sectionName in rawSections) {
 		const sections = rawSections[sectionName];
-		const course = new Course(sectionName, randomColor(), sections[0].creditsMax, []);
+		const course = new Course(sectionName, stringColor(sectionName), sections[0].creditsMax, []);
 		for (const rawSection of sections) {
 			if (
 				rawSection.meetings.some(
@@ -391,7 +402,7 @@ const idFromSections = (s: Section[]): string => {
 	return sections.map((section) => section.id).join('--');
 };
 
-export const randomSchedule = (hours: number): Schedule => {
+export const randomSchedule = (hours: number, courses: Course[]): Schedule => {
 	const sections = [];
 	for (const course of shuffled(courses)) {
 		for (const section of shuffled(course.sections).filter(
@@ -413,21 +424,23 @@ export const PROGRESS_PRECISION = 100;
 export const generateSchedules = async (
 	num: number,
 	hours: number,
+	courses: Course[],
 	progress: (n: number) => void
 ): Promise<Schedule[]> => {
 	const result: Schedule[] = [];
 	let lastPercent = 0;
 	progress(0);
 	for (let i = 0; i < num; i++) {
-		result.push(randomSchedule(hours));
+		result.push(randomSchedule(hours, courses));
 		const percent = Math.floor((i / num) * PROGRESS_PRECISION) / PROGRESS_PRECISION;
 		if (percent > lastPercent) {
 			progress(percent);
 		}
 	}
-	return result
-		.filter((schedule) => schedule.valid())
-		.filter((schedule) => schedule.totalHours() === hours);
+	return uniqueBy(
+		result.filter((schedule) => schedule.valid()),
+		(s1, s2) => s1.equals(s2)
+	).filter(s => s.totalHours() === hours)
 };
 
 export const randomSection = () => {

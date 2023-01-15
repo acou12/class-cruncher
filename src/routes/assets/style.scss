@@ -21,10 +21,17 @@ body {
 			left: 0px;
 			width: 100%;
 			// background-color: orange;
+			// padding: 10px;
 			border-radius: 8px;
+			color: white;
 			transition: filter 0.2s;
 			&:hover {
 				filter: brightness(120%);
+			}
+			div {
+				font-size: smaller;
+				padding: 3px;
+				overflow-x: clip;
 			}
 		}
 	}
@@ -76,6 +83,6 @@ input {
 	@include button(orange);
 }
 
-button {
+.button {
 	@include button(orange);
 }

@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { schedules } from '$lib/stores';
 	import { Meeting, Schedule, scheduleFromSections, Section } from '$lib/schedule';
-	import { onDataLoaded } from '$lib/util';
 	import ScheduleComponent from '../../../components/ScheduleComponent.svelte';
 	import { goto } from '$app/navigation';
 	import SectionComponent from '../../../components/SectionComponent.svelte';
+	import { onMount } from 'svelte';
 
 	let selectedMeeting: Meeting;
 
@@ -26,18 +26,16 @@
 		);
 		selectedMeeting = section.meetings[0];
 		// todo: ...
-		schedules.set($schedules!.map((s, i) => (index === i ? schedule : s)));
+		$schedules = $schedules!.map((s, i) => (index === i ? schedule : s));
 	};
 
-	onDataLoaded(
-		() => {
-			document.addEventListener('keydown', exit);
-			schedule = $schedules![parseInt(data.id)];
-		},
-		() => {
+	onMount(() => {
+		document.addEventListener('keydown', exit);
+		schedule = $schedules![parseInt(data.id)];
+		return () => {
 			document.removeEventListener('keydown', exit);
-		}
-	);
+		};
+	});
 </script>
 
 {#if schedule !== undefined}
@@ -45,7 +43,7 @@
 		<a class="close" href="/schedule/{data.id}">Back</a>
 		<div class="grid">
 			<div class="schedule-wrapper">
-				<ScheduleComponent {schedule} bind:selectedMeeting interactable />
+				<ScheduleComponent {schedule} bind:selectedMeeting interactable showText />
 			</div>
 			<div class="sidebar">
 				<h2>Edit Mode</h2>

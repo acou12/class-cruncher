@@ -2,6 +2,7 @@
 	import type { Meeting, Schedule } from '../../lib/schedule';
 
 	export let interactable: boolean = false;
+	export let showText: boolean = false;
 	export let schedule: Schedule;
 	export let selectedMeeting: Meeting | undefined = undefined;
 
@@ -28,7 +29,13 @@
                 `}
 					on:click={() => interactable && (selectedMeeting = meeting)}
 					on:keydown={() => interactable && (selectedMeeting = meeting)}
-				/>
+				>
+					{#if showText}
+						<div>
+							{meeting.parentSection.parentCourse.name}, {meeting.location.name.split(' ')[0]}
+						</div>
+					{/if}
+				</div>
 			{/each}
 			<!-- {#if otherOptions !== undefined}
         {#each otherOptions as section}

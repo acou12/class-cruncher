@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import ScheduleComponent from './components/ScheduleComponent.svelte';
-	import sections from './assets/data.json?raw';
-	import coordinates from './assets/coordinates.json?raw';
+	// import sections from './assets/data.json?raw';
+	// import coordinates from './assets/coordinates.json?raw';
 	import {
+		courses,
 		deserialize,
-		initialize,
+		// initialize,
 		PROGRESS_PRECISION,
 		Schedule,
 		serialize,
@@ -14,13 +15,14 @@
 	} from '$lib/schedule';
 	import type { Input as GenerateSchedulesInput } from '$lib/workers/generateSchedules';
 	import Spinner from './components/Spinner.svelte';
-	import { schedules } from '$lib/stores';
+	import { schedules, selectedCourses } from '$lib/stores';
 
 	let schedulesWorkers: Worker;
 
 	let progress: number = 0;
 
 	onMount(async () => {
+		checked = Array(courses.length).fill(false);
 		// generate();
 	});
 
@@ -31,7 +33,7 @@
 			(sh) => sh.name === sortSelect.value
 		)!.sort;
 
-		schedules.set($schedules.sort((x, y) => heuristic(x) - heuristic(y)));
+		$schedules = $schedules.sort((x, y) => heuristic(x) - heuristic(y));
 	};
 
 	type SmartBreak = {
@@ -76,7 +78,7 @@
 
 	const generate = async () => {
 		progress = 0;
-		schedules.set(undefined);
+		$schedules = undefined;
 		schedulesWorkers = new (await import('$lib/workers/generateSchedules?worker')).default();
 		schedulesWorkers.onmessage = (e) => {
 			switch (e.data.type) {
@@ -85,37 +87,36 @@
 					break;
 				case 'schedules':
 					progress = 0;
-					schedules.set((e.data.schedules as SerializedSchedule[]).map(deserialize));
-					schedules.set(
-						$schedules!.filter((schedule) =>
-							breaks.every((smartBreak) =>
-								smartBreak.options.some(
-									(option) =>
-										![...smartBreak.days].some((day) =>
-											schedule.days[[...'MTWRF'].indexOf(day)].meetings.some(
-												// todo: timeslot class with `intersects` method
-												(meeting) =>
-													(meeting.startTime <= option.startTime &&
-														option.startTime <= meeting.endTime) ||
-													(meeting.startTime <= option.endTime &&
-														option.endTime <= meeting.endTime) ||
-													(option.startTime <= meeting.startTime &&
-														meeting.startTime <= option.endTime) ||
-													(option.startTime <= meeting.endTime && meeting.endTime <= option.endTime)
-											)
+					$schedules = (e.data.schedules as SerializedSchedule[]).map(deserialize);
+					$schedules = $schedules!.filter((schedule) =>
+						breaks.every((smartBreak) =>
+							smartBreak.options.some(
+								(option) =>
+									![...smartBreak.days].some((day) =>
+										schedule.days[[...'MTWRF'].indexOf(day)].meetings.some(
+											// todo: timeslot class with `intersects` method
+											(meeting) =>
+												(meeting.startTime <= option.startTime &&
+													option.startTime <= meeting.endTime) ||
+												(meeting.startTime <= option.endTime &&
+													option.endTime <= meeting.endTime) ||
+												(option.startTime <= meeting.startTime &&
+													meeting.startTime <= option.endTime) ||
+												(option.startTime <= meeting.endTime && meeting.endTime <= option.endTime)
 										)
-								)
+									)
 							)
 						)
 					);
-					localStorage.setItem('data', JSON.stringify({ schedules: $schedules!.map(serialize) }));
+					// localStorage.setItem('data', JSON.stringify({ schedules: $schedules!.map(serialize) }));
 					break;
 			}
 		};
 		schedulesWorkers.postMessage({
 			total: parseInt(totalInput.value),
 			hours: parseInt(hoursInput.value),
-			sort: sortSelect.value
+			sort: sortSelect.value,
+			courses: $selectedCourses
 		} as GenerateSchedulesInput);
 		// sort();
 	};
@@ -123,12 +124,18 @@
 	const cancel = () => {
 		// todo: possible performance issues with consistent termination of threads
 		schedulesWorkers.terminate();
-		schedules.set([]);
+		$schedules = [];
 	};
 
 	let sortSelect: HTMLSelectElement;
 	let hoursInput: HTMLInputElement;
 	let totalInput: HTMLInputElement;
+
+	let checked: boolean[] = [];
+
+	const getCheckedCourses = () => {
+		return courses.filter((_course, i) => checked[i]);
+	};
 </script>
 
 <header>
@@ -165,6 +172,22 @@
 				<span class="break">{b.name}</span>
 			{/each}
 		</div>
+
+		<div>
+			<a href="/choose">Courses</a>
+			<!-- <summary>Courses</summary>
+				{#each courses as course, i}
+					<div class="course-check">
+						{course.name}:
+						<input
+							type="checkbox"
+							name="{course}-enabled"
+							id="{course}-enabled"
+							bind:checked={checked[i]}
+						/>
+					</div>
+				{/each} -->
+		</div>
 	</div>
 </header>
 
@@ -197,7 +220,7 @@
 		</div>
 	</div>
 	<div class="centered">
-		<button on:click={cancel}>cancel</button>
+		<button class="button" on:click={cancel}>cancel</button>
 	</div>
 {/if}
 

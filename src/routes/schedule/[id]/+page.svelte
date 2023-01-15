@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { schedules } from '$lib/stores';
 	import { serialize, type Meeting, type Schedule } from '$lib/schedule';
-	import { humanTime, onDataLoaded } from '$lib/util';
+	import { humanTime } from '$lib/util';
 	import ScheduleComponent from '../../components/ScheduleComponent.svelte';
 	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
 
 	let selectedMeeting: Meeting;
 
@@ -50,15 +51,13 @@
 		}
 	};
 
-	onDataLoaded(
-		() => {
-			document.addEventListener('keydown', exit);
-			schedule = $schedules![parseInt(data.id)];
-		},
-		() => {
+	onMount(() => {
+		document.addEventListener('keydown', exit);
+		schedule = $schedules![parseInt(data.id)];
+		return () => {
 			document.removeEventListener('keydown', exit);
-		}
-	);
+		};
+	});
 </script>
 
 {#if schedule !== undefined}
@@ -66,7 +65,7 @@
 		<a class="close" href="/">Back</a>
 		<div class="grid">
 			<div class="schedule-wrapper">
-				<ScheduleComponent {schedule} bind:selectedMeeting interactable />
+				<ScheduleComponent {schedule} bind:selectedMeeting interactable showText />
 			</div>
 			<div class="sidebar">
 				<h2>Legend</h2>
@@ -106,7 +105,7 @@
 						</div>
 					{/each}
 				{/if}
-				<button on:click={copyLink}>Copy Sharable Link</button>
+				<button class="button" on:click={copyLink}>Copy Sharable Link</button>
 				<a class="edit" href="/schedule/{data.id}/edit">Edit Schedule</a>
 			</div>
 		</div>

@@ -1,7 +1,3 @@
-import { onMount } from 'svelte';
-import { derived, get, type Unsubscriber } from 'svelte/store';
-import { schedules } from './stores';
-
 export const fixedTime = (time: number): number => {
 	return Math.floor(time / 100) * 60 + (time % 100);
 };
@@ -18,6 +14,20 @@ export const randomColor = (): string =>
 	Math.floor(Math.random() * 0xffffff)
 		.toString(16)
 		.padStart(6, '0');
+
+/**
+ * rough hash of a course name to make colors consistent across sessions.
+ */
+export const stringColor = (s: string): string => {
+	let n = 0;
+	// todo: deprecated; use buffers
+	for (const c of btoa(s)) {
+		n *= 36;
+		n += c.charCodeAt(0);
+		n %= 0xffffff;
+	}
+	return n.toString(16).padStart(6, '0');
+};
 
 // fear
 
@@ -79,28 +89,10 @@ export const unique = <T>(arr: T[]): T[] => {
 	return result;
 };
 
-// TODO: REALLY BAD HACK
-export const onDataLoaded = (f: () => void, destroy: () => void = () => {}) => {
-	onMount(() => {
-		let unsubscribe: Unsubscriber;
-		if (get(schedules)?.length === 0) {
-			let loaded = false;
-			unsubscribe = schedules.subscribe((s) => {
-				if (!loaded) {
-					if (s !== undefined) {
-						setTimeout(() => {
-							f();
-						}, 1);
-						loaded = true;
-					}
-				}
-			});
-		} else {
-			f();
-		}
-		return () => {
-			unsubscribe?.();
-			destroy();
-		};
-	});
+export const uniqueBy = <T>(arr: T[], equals: (t1: T, t2: T) => boolean): T[] => {
+	const result: T[] = [];
+	for (const t of arr) {
+		if (!result.some((other) => equals(t, other))) result.push(t);
+	}
+	return result;
 };
