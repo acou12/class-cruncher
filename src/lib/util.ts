@@ -26,6 +26,8 @@ export const stringColor = (s: string): string => {
 		n += c.charCodeAt(0);
 		n %= 0xffffff;
 	}
+	for (const x of [13539042, 11647610, 13327862, 7175073])
+		n = (n * x) % 0xffffff;
 	return n.toString(16).padStart(6, '0');
 };
 

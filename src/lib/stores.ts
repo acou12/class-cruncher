@@ -4,3 +4,10 @@ import type { Writable } from 'svelte/store';
 
 export const schedules: Writable<Schedule[] | undefined> = writable([]);
 export const selectedCourses: Writable<Course[]> = writable([]);
+
+// const defaultSettings = {
+//     hours: 18,
+//     sort: 'gaps',
+// }
+
+// export const settings = writable(defaultSettings)
